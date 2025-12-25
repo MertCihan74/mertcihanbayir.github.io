@@ -67,7 +67,17 @@ body {
 }
 
 [data-theme="dark"] .navbar {
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.98);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+}
+
+[data-theme="dark"] .nav-link {
+  color: var(--text-light);
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+  color: var(--accent-color);
 }
 
 .nav-container {
@@ -393,8 +403,8 @@ body {
 }
 
 .profile-avatar {
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   background: var(--gradient-secondary);
   border-radius: 50%;
   display: flex;
@@ -1197,8 +1207,8 @@ section {
   }
 
   .profile-avatar {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 
   .about-content,
