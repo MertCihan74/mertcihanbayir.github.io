@@ -90,23 +90,14 @@ body {
   height: 70px;
 }
 
-.nav-logo .logo-card {
-  background: white;
-  border-radius: 4px;
-  padding: 2px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: var(--transition-fast);
-}
-
 .nav-logo .logo-image {
   height: 50px;
   width: auto;
-  filter: brightness(0.8);
   transition: var(--transition-fast);
 }
 
 [data-theme="dark"] .nav-logo .logo-image {
-  filter: brightness(1.2);
+  filter: brightness(1.1) contrast(1.2);
 }
 
 .nav-menu {
@@ -1036,23 +1027,14 @@ section {
   margin-bottom: 2rem;
 }
 
-.footer-logo .logo-card {
-  background: white;
-  border-radius: 3px;
-  padding: 1px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: var(--transition-fast);
-}
-
 .footer-logo .logo-image {
   height: 45px;
   width: auto;
-  filter: brightness(0.8);
   transition: var(--transition-fast);
 }
 
 [data-theme="dark"] .footer-logo .logo-image {
-  filter: brightness(1.2);
+  filter: brightness(1.1) contrast(1.2);
 }
 
 .footer-links {
