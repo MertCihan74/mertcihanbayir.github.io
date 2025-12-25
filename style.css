@@ -400,11 +400,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 6rem;
-  color: white;
   box-shadow: var(--shadow-lg);
   position: relative;
   z-index: 2;
+  overflow: hidden;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 @keyframes pulse {
