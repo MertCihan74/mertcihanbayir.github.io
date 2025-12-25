@@ -6,6 +6,35 @@ const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.querySelector('.nav-menu');
 const contactForm = document.getElementById('contactForm');
 const skillBars = document.querySelectorAll('.skill-progress');
+const langBtns = document.querySelectorAll('.lang-btn');
+
+// Language Management
+function initLanguage() {
+  const savedLang = localStorage.getItem('language') || 'en';
+  setLanguage(savedLang);
+}
+
+function setLanguage(lang) {
+  // Update HTML lang attribute
+  document.documentElement.lang = lang;
+
+  // Update active language button
+  langBtns.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-lang') === lang) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Update all text elements with data attributes
+  const elements = document.querySelectorAll('[data-' + lang + ']');
+  elements.forEach(element => {
+    element.textContent = element.getAttribute('data-' + lang);
+  });
+
+  // Save language preference
+  localStorage.setItem('language', lang);
+}
 
 // Theme Management
 function initTheme() {
@@ -28,13 +57,24 @@ function toggleTheme() {
 
 // Navigation
 function smoothScroll(target) {
-  const element = document.querySelector(target);
+  // Handle both hash (#section) and path (/section) formats
+  let selector = target;
+  if (target.startsWith('/#')) {
+    selector = target.substring(1); // Remove leading slash
+  } else if (target.startsWith('#')) {
+    selector = target;
+  }
+
+  const element = document.querySelector(selector);
   if (element) {
     const offsetTop = element.offsetTop - 70; // Account for fixed navbar
     window.scrollTo({
       top: offsetTop,
       behavior: 'smooth'
     });
+
+    // Update URL without page reload
+    history.replaceState(null, null, target);
   }
 }
 
@@ -279,11 +319,22 @@ function updateNavbar() {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize language
+  initLanguage();
+
   // Initialize theme
   initTheme();
 
   // Theme toggle
   themeToggle.addEventListener('click', toggleTheme);
+
+  // Language toggle
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      setLanguage(lang);
+    });
+  });
 
   // Navigation
   navLinks.forEach(link => {
