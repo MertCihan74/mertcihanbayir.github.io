@@ -32,6 +32,12 @@ function setLanguage(lang) {
     element.textContent = element.getAttribute('data-' + lang);
   });
 
+  // Update placeholders for form inputs
+  const inputs = document.querySelectorAll('[data-' + lang + '-placeholder]');
+  inputs.forEach(input => {
+    input.placeholder = input.getAttribute('data-' + lang + '-placeholder');
+  });
+
   // Save language preference
   localStorage.setItem('language', lang);
 }
