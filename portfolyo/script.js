@@ -352,4 +352,61 @@ const additionalStyles = `
 </style>
 `;
 
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  initLanguage();
+  initTheme();
+});
+
+// Language toggle
+langBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const lang = btn.getAttribute('data-lang');
+    setLanguage(lang);
+  });
+});
+
+// Theme toggle
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
+
+// Smooth scrolling for navigation links
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href');
+    const targetSection = document.querySelector(targetId);
+
+    if (targetSection) {
+      const offsetTop = targetSection.offsetTop - 70;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+
+      // Close mobile menu if open
+      if (navMenu.classList.contains('active')) {
+        toggleMobileMenu();
+      }
+    }
+  });
+});
+
+// Mobile menu toggle
+if (navToggle) {
+  navToggle.addEventListener('click', toggleMobileMenu);
+}
+
+// Scroll indicator
+document.addEventListener('scroll', updateScrollIndicator);
+
+// Initialize scroll indicator on load
+updateScrollIndicator();
+
+// Particle animation
+if (typeof initParticles === 'function') {
+  initParticles();
+}
+
 document.head.insertAdjacentHTML('beforeend', additionalStyles);

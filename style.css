@@ -439,6 +439,7 @@ body {
   text-align: center;
   color: var(--text-secondary);
   animation: bounce 2s infinite;
+  z-index: 10;
 }
 
 .scroll-mouse {
@@ -919,31 +920,35 @@ section {
 
 /* Contact Section */
 .contact-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .contact-info {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  max-width: 800px;
+  width: 100%;
 }
 
 .contact-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1.5rem;
   padding: 1.5rem;
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: 16px;
   transition: var(--transition-fast);
+  min-height: 100px;
+  border: 1px solid var(--border-color);
 }
 
 .contact-item:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
 }
 
 .contact-icon {
@@ -958,17 +963,27 @@ section {
   color: white;
 }
 
+.contact-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .contact-details h3 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .contact-details a {
   color: var(--text-secondary);
   text-decoration: none;
   transition: var(--transition-fast);
+  word-break: break-word;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .contact-details a:hover {
@@ -1225,6 +1240,9 @@ section {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .contact-method {
@@ -1235,6 +1253,11 @@ section {
   border: 1px solid var(--border-color);
   text-align: center;
   transition: var(--transition-fast);
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .contact-method:hover {
@@ -1259,44 +1282,22 @@ section {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .contact-info {
   color: var(--text-secondary);
   font-size: 0.9rem;
-}
-
-/* Trust Indicators */
-.trust-indicators {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.trust-item {
+  margin-bottom: 1rem;
   text-align: center;
-  padding: 1.5rem;
-  background: var(--bg-primary);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-color);
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
 }
 
-.trust-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.trust-label {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
 
 /* Footer */
 .footer {
@@ -1533,9 +1534,41 @@ section {
     grid-template-columns: 1fr;
     text-align: center;
   }
+
+  .scroll-indicator {
+    bottom: 1.5rem;
+  }
+
+  .scroll-mouse {
+    width: 28px;
+    height: 42px;
+    border-width: 3px;
+  }
+
+  .scroll-wheel {
+    width: 6px;
+    height: 10px;
+    border-radius: 3px;
+  }
 }
 
 @media (max-width: 480px) {
+  .scroll-indicator {
+    bottom: 1rem;
+  }
+
+  .scroll-mouse {
+    width: 24px;
+    height: 36px;
+    border-width: 2px;
+  }
+
+  .scroll-wheel {
+    width: 4px;
+    height: 8px;
+    border-radius: 2px;
+  }
+
   .hero-name {
     font-size: 2rem;
   }
@@ -1552,6 +1585,8 @@ section {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
+    min-height: auto;
+    padding: 1.5rem 1rem;
   }
 
   .hero-buttons {
@@ -1562,5 +1597,312 @@ section {
   .btn {
     width: 100%;
     max-width: 300px;
+  }
+}
+
+/* ========================================
+   PORTFOLIO SITE MOBILE STYLES
+   ======================================== */
+
+/* Portfolio Pricing Cards */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pricing-card {
+  background: var(--bg-primary);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-fast);
+  position: relative;
+  text-align: center;
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--primary-color);
+  position: relative;
+}
+
+.pricing-header {
+  margin-bottom: 2rem;
+}
+
+.pricing-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.pricing-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.pricing-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.pricing-features li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.pricing-features li::before {
+  content: "✓";
+  color: #10b981;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.pricing-delivery {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.pricing-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--gradient-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow);
+}
+
+.pricing-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.badge {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ========================================
+   ADDITIONAL MOBILE RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+  }
+
+  .hero-section {
+    padding: 3rem 2rem;
+  }
+
+  .hero-name {
+    font-size: 3.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  /* Tablet portrait and smaller */
+  .hero-name {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .btn {
+    max-width: 280px;
+  }
+
+  .contact-form {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Small phones */
+  .hero-section {
+    padding: 2rem 0.5rem;
+  }
+
+  .hero-name {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-description p {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    max-width: 260px;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .section {
+    padding: 2rem 0;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .contact-form {
+    padding: 1rem;
+  }
+
+  .footer {
+    padding: 1rem 0.5rem;
+  }
+
+  /* Portfolio specific mobile styles */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .pricing-card {
+    padding: 2rem;
+  }
+
+  .pricing-icon {
+    font-size: 2.5rem;
+  }
+
+  .pricing-title {
+    font-size: 1.5rem;
+  }
+
+  .pricing-price {
+    font-size: 2rem;
+  }
+
+  .pricing-btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .portfolio-item {
+    padding: 1.5rem;
+  }
+
+  .portfolio-image {
+    height: 180px;
+  }
+
+  .portfolio-title {
+    font-size: 1.2rem;
+  }
+
+  .portfolio-description {
+    font-size: 0.95rem;
+  }
+
+  .portfolio-tags {
+    gap: 0.5rem;
+  }
+
+  .portfolio-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Contact */
+  .contact-content {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .contact-info {
+    order: 1;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: none;
+  }
+
+  .contact-methods {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: none;
+  }
+
+  .contact-method {
+    min-height: 160px;
+  }
+
+  .contact-details {
+    justify-content: flex-start;
+  }
+
+  .contact-details h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-details a {
+    font-size: 0.9rem;
+    word-break: break-all;
   }
 }
