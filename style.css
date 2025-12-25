@@ -1523,6 +1523,7 @@ section {
 
   .container {
     padding: 0 1rem;
+    overflow-x: hidden;
   }
 
   .footer-content {
@@ -1848,10 +1849,14 @@ section {
 
   .contact-methods {
     gap: 1rem;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 1rem;
   }
 
   .contact-method {
     min-height: 160px;
+    width: 100%;
   }
 
   .contact-details {
