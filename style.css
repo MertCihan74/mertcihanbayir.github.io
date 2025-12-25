@@ -920,16 +920,11 @@ section {
 
 /* Contact Section */
 .contact-content {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.contact-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   max-width: 800px;
+  margin: 0 auto;
   width: 100%;
 }
 
@@ -1499,7 +1494,7 @@ section {
   .about-content,
   .contact-content {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .about-stats {
@@ -1847,15 +1842,8 @@ section {
 
   /* Contact */
   .contact-content {
-    flex-direction: column;
-    gap: 3rem;
-  }
-
-  .contact-info {
-    order: 1;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    max-width: none;
+    gap: 1rem;
   }
 
   .contact-methods {
