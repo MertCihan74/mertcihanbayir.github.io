@@ -393,8 +393,8 @@ body {
 }
 
 .profile-avatar {
-  width: 250px;
-  height: 250px;
+  width: 180px;
+  height: 180px;
   background: var(--gradient-secondary);
   border-radius: 50%;
   display: flex;
@@ -1197,9 +1197,8 @@ section {
   }
 
   .profile-avatar {
-    width: 200px;
-    height: 200px;
-    font-size: 4rem;
+    width: 150px;
+    height: 150px;
   }
 
   .about-content,
