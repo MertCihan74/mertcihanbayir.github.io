@@ -81,14 +81,14 @@ body {
 }
 
 .nav-logo .logo-image {
-  height: 45px;
+  height: 50px;
   width: auto;
-  filter: brightness(0) invert(1);
+  filter: brightness(0.8);
   transition: var(--transition-fast);
 }
 
 [data-theme="dark"] .nav-logo .logo-image {
-  filter: brightness(1);
+  filter: brightness(1.2);
 }
 
 .nav-menu {
@@ -1013,14 +1013,14 @@ section {
 }
 
 .footer-logo .logo-image {
-  height: 40px;
+  height: 45px;
   width: auto;
-  filter: brightness(0) invert(1);
+  filter: brightness(0.8);
   transition: var(--transition-fast);
 }
 
 [data-theme="dark"] .footer-logo .logo-image {
-  filter: brightness(1);
+  filter: brightness(1.2);
 }
 
 .footer-links {
