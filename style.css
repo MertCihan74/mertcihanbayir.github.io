@@ -1536,9 +1536,14 @@ section {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .scroll-indicator {
     display: none;
+  }
+
+  .contact-methods {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
   }
 
   .hero-name {
@@ -1843,11 +1848,6 @@ section {
 
   /* Contact */
   .contact-content {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .contact-methods {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
