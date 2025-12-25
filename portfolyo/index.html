@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mert Cihan Bayır - Profesyonel Web Tasarım Hizmetleri</title>
+  <meta name="description" content="Mert Cihan Bayır ile profesyonel web tasarım hizmetleri. Modern, hızlı ve kullanıcı dostu web siteleri. Ücretsiz danışmanlık ve demo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .pricing-card {
+      background: var(--bg-primary);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: var(--transition-fast);
+      text-align: center;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pricing-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .pricing-btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: var(--gradient-primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      box-shadow: var(--shadow);
+    }
+
+    .pricing-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .portfolio-item {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition-fast);
+      border: 1px solid var(--border-color);
+    }
+
+    .portfolio-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .portfolio-image {
+      height: 200px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 3rem;
+    }
+
+    .portfolio-content {
+      padding: 1.5rem;
+    }
+
+    .portfolio-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .portfolio-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .portfolio-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .portfolio-tag {
+      background: var(--bg-secondary);
+      color: var(--primary-color);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .contact-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-method {
+      background: var(--bg-primary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: var(--transition-fast);
+    }
+
+    .contact-method:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient-primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+    }
+
+    .contact-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-info {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .trust-indicators {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .trust-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
+
+    .trust-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .trust-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <img src="../mcb.png" alt="MCB Logo" class="logo-image">
+      </div>
+      <div class="nav-menu">
+        <a href="#home" class="nav-link active" data-en="Home" data-tr="Ana Sayfa">Ana Sayfa</a>
+        <a href="#services" class="nav-link" data-en="Services" data-tr="Hizmetler">Hizmetler</a>
+        <a href="#portfolio" class="nav-link" data-en="Portfolio" data-tr="Portfolyo">Portfolyo</a>
+        <a href="#about" class="nav-link" data-en="About" data-tr="Hakkımda">Hakkımda</a>
+        <a href="#contact" class="nav-link" data-en="Contact" data-tr="İletişim">İletişim</a>
+      </div>
+      <div class="nav-controls">
+        <div class="language-selector">
+          <button class="lang-btn active" data-lang="tr">TR</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+        </button>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-background">
+      <div class="particle particle-1"></div>
+      <div class="particle particle-2"></div>
+      <div class="particle particle-3"></div>
+      <div class="particle particle-4"></div>
+      <div class="particle particle-5"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          <span class="hero-greeting">Merhaba, ben</span>
+          <span class="hero-name">Mert Cihan Bayır</span>
+        </h1>
+        <p class="hero-subtitle" data-en="Professional Web Designer & Developer" data-tr="Profesyonel Web Tasarımcı & Geliştirici">Profesyonel Web Tasarımcı & Geliştirici</p>
+        <div class="hero-description">
+          <p data-en="I design modern, fast and user-friendly websites. I offer professional solutions for everyone from small businesses to large companies. Get to know me with free consultation and demo opportunities!" data-tr="Modern, hızlı ve kullanıcı dostu web siteleri tasarlarım. Küçük işletmelerden büyük şirketlere kadar herkes için profesyonel çözümler sunarım. Ücretsiz danışmanlık ve demo fırsatları ile tanışın!">Modern, hızlı ve kullanıcı dostu web siteleri tasarlarım. Küçük işletmelerden büyük şirketlere kadar herkes için profesyonel çözümler sunarım. Ücretsiz danışmanlık ve demo fırsatları ile tanışın!</p>
+        </div>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">
+            <i class="fas fa-comments"></i> <span data-en="Free Consultation" data-tr="Ücretsiz Danışmanlık">Ücretsiz Danışmanlık</span>
+          </a>
+          <a href="#portfolio" class="btn btn-secondary">
+            <i class="fas fa-eye"></i> <span data-en="View Examples" data-tr="Örnek Çalışmalar">Örnek Çalışmalar</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="profile-container">
+          <div class="profile-glow"></div>
+          <div class="profile-avatar">
+            <img src="../mcb_pp.png" alt="Mert Cihan Bayır" class="profile-image">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>Aşağı Kaydır</span>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-en="Services" data-tr="Hizmetler">Hizmetler</h2>
+        <div class="section-subtitle" data-en="Your packages and prices" data-tr="Paketleriniz ve fiyatlarınız">Paketleriniz ve fiyatlarınız</div>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title" data-en="Starter Package" data-tr="Başlangıç Paketi">Başlangıç Paketi</h3>
+            <div class="pricing-price">₺2,500</div>
+          </div>
+          <ul class="pricing-features">
+            <li>Tek sayfalık responsive web sitesi</li>
+            <li>Mobil uyumlu tasarım</li>
+            <li>Temel SEO optimizasyonu</li>
+            <li>İletişim formu</li>
+            <li>1 yıl ücretsiz hosting</li>
+            <li>3 ay ücretsiz bakım</li>
+          </ul>
+          <a href="#contact" class="pricing-btn">Hemen Başla</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-header">
+            <h3 class="pricing-title" data-en="Professional Package" data-tr="Profesyonel Paket">Profesyonel Paket</h3>
+            <div class="pricing-price">₺5,000</div>
+            <span class="badge" data-en="Most Popular" data-tr="En Popüler">En Popüler</span>
+          </div>
+          <ul class="pricing-features">
+            <li>5 sayfalık responsive web sitesi</li>
+            <li>Admin paneli</li>
+            <li>E-ticaret özelliği</li>
+            <li>Gelişmiş SEO optimizasyonu</li>
+            <li>Sosyal medya entegrasyonu</li>
+            <li>6 ay ücretsiz bakım</li>
+            <li>1 yıl ücretsiz domain</li>
+          </ul>
+          <a href="#contact" class="pricing-btn">Hemen Başla</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title" data-en="Corporate Package" data-tr="Kurumsal Paket">Kurumsal Paket</h3>
+            <div class="pricing-price">₺10,000+</div>
+          </div>
+          <ul class="pricing-features">
+            <li>10+ sayfalık kurumsal web sitesi</li>
+            <li>Özel tasarım</li>
+            <li>İleri düzey e-ticaret</li>
+            <li>Çoklu dil desteği</li>
+            <li>API entegrasyonları</li>
+            <li>1 yıl ücretsiz bakım</li>
+            <li>Özel danışmanlık</li>
+          </ul>
+          <a href="#contact" class="pricing-btn">İletişime Geç</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-en="Portfolio" data-tr="Portfolyo">Portfolyo</h2>
+        <div class="section-subtitle" data-en="My example works and demo websites" data-tr="Örnek çalışmalarım ve demo siteler">Örnek çalışmalarım ve demo siteler</div>
+      </div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">E-Ticaret Sitesi</h3>
+            <p class="portfolio-description">Modern ve kullanıcı dostu e-ticaret platformu. Ürün yönetimi, ödeme sistemi ve müşteri paneli dahil.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">React</span>
+              <span class="portfolio-tag">Node.js</span>
+              <span class="portfolio-tag">MongoDB</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Restoran Web Sitesi</h3>
+            <p class="portfolio-description">Güzel tasarım ve rezervasyon sistemi ile restoranlar için özel web sitesi çözümü.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">HTML/CSS</span>
+              <span class="portfolio-tag">JavaScript</span>
+              <span class="portfolio-tag">PHP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Kurumsal Web Sitesi</h3>
+            <p class="portfolio-description">Profesyonel kurumsal kimlik ve modern tasarım ile şirket web sitesi çözümü.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">WordPress</span>
+              <span class="portfolio-tag">Custom Design</span>
+              <span class="portfolio-tag">SEO</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-blog"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Blog & Haber Sitesi</h3>
+            <p class="portfolio-description">SEO dostu blog platformu. İçerik yönetimi ve sosyal medya entegrasyonu ile.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">Next.js</span>
+              <span class="portfolio-tag">Contentful</span>
+              <span class="portfolio-tag">Vercel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Mobil Uygulama</h3>
+            <p class="portfolio-description">React Native ile geliştirilmiş cross-platform mobil uygulama çözümü.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">React Native</span>
+              <span class="portfolio-tag">Firebase</span>
+              <span class="portfolio-tag">iOS/Android</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-item">
+          <div class="portfolio-image">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="portfolio-content">
+            <h3 class="portfolio-title">Dashboard & Analytics</h3>
+            <p class="portfolio-description">Veri görselleştirme ve analitik dashboard çözümü. Gerçek zamanlı raporlama sistemi.</p>
+            <div class="portfolio-tags">
+              <span class="portfolio-tag">Vue.js</span>
+              <span class="portfolio-tag">D3.js</span>
+              <span class="portfolio-tag">Python</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-en="About Me" data-tr="Hakkımda">Hakkımda</h2>
+        <div class="section-subtitle" data-en="Trust-building information" data-tr="Güven oluşturucu bilgiler">Güven oluşturucu bilgiler</div>
+      </div>
+      <div class="about-content">
+        <div class="about-text">
+          <p>Merhaba! Ben Mert Cihan Bayır, 4+ yıllık deneyime sahip profesyonel web geliştirici ve tasarımcıyım. Sakarya Üniversitesi Bilgisayar Mühendisliği mezunuyum ve teknoloji sektöründe tutkulu bir şekilde çalışıyorum.</p>
+
+          <div class="trust-indicators">
+            <div class="trust-item">
+              <span class="trust-number">50+</span>
+              <span class="trust-label">Tamamlanan Proje</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-number">30+</span>
+              <span class="trust-label">Mutlu Müşteri</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-number">4+</span>
+              <span class="trust-label">Yıl Deneyim</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-number">24/7</span>
+              <span class="trust-label">Destek</span>
+            </div>
+          </div>
+
+          <p><strong>Neden Beni Tercih Etmelisiniz?</strong></p>
+          <ul>
+            <li>✅ Modern ve güncel teknolojiler kullanırım</li>
+            <li>✅ Projelerimi zamanında teslim ederim</li>
+            <li>✅ Sürekli destek ve bakım sağlarım</li>
+            <li>✅ Rekabetçi fiyatlar sunarım</li>
+            <li>✅ Ücretsiz danışmanlık verirım</li>
+            <li>✅ Demo siteler gösterebilirim</li>
+          </ul>
+        </div>
+        <div class="about-image">
+          <div class="code-animation">
+            <div class="code-line line-1">const developer = new WebDeveloper();</div>
+            <div class="code-line line-2">developer.createWebsite(client);</div>
+            <div class="code-line line-3">developer.deliverOnTime();</div>
+            <div class="cursor">|</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-en="Contact" data-tr="İletişim">İletişim</h2>
+        <div class="section-subtitle" data-en="Reach via phone, WhatsApp, form" data-tr="Telefon, WhatsApp, form ile ulaşın">Telefon, WhatsApp, form ile ulaşın</div>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info">
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <h3 class="contact-title">WhatsApp</h3>
+              <p class="contact-info">Hızlı iletişim için WhatsApp'tan yazın</p>
+              <a href="https://wa.me/905551234567" class="btn btn-primary" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp'tan Yaz
+              </a>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <h3 class="contact-title">Telefon</h3>
+              <p class="contact-info">+90 555 123 45 67</p>
+              <a href="tel:+905551234567" class="btn btn-secondary">
+                <i class="fas fa-phone"></i> Ara
+              </a>
+            </div>
+
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3 class="contact-title">Email</h3>
+              <p class="contact-info">mertcihanbayir@gmail.com</p>
+              <a href="mailto:mertcihanbayir@gmail.com" class="btn btn-secondary">
+                <i class="fas fa-envelope"></i> Email Gönder
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form id="contactForm">
+            <div class="form-group">
+              <input type="text" id="name" name="name" required placeholder="Adınız Soyadınız">
+            </div>
+            <div class="form-group">
+              <input type="email" id="email" name="email" required placeholder="Email Adresiniz">
+            </div>
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone" placeholder="Telefon Numaranız (İsteğe bağlı)">
+            </div>
+            <div class="form-group">
+              <input type="text" id="subject" name="subject" required placeholder="Proje Türü (Web sitesi, E-ticaret vb.)">
+            </div>
+            <div class="form-group">
+              <textarea id="message" name="message" required placeholder="Proje detaylarını ve beklentilerinizi anlatın..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Ücretsiz Teklif Al
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="../mcb.png" alt="MCB Logo" class="logo-image">
+        </div>
+        <div class="footer-links">
+          <a href="#home" data-en="Home" data-tr="Ana Sayfa">Ana Sayfa</a>
+          <a href="#services" data-en="Services" data-tr="Hizmetler">Hizmetler</a>
+          <a href="#portfolio" data-en="Portfolio" data-tr="Portfolyo">Portfolyo</a>
+          <a href="#about" data-en="About" data-tr="Hakkımda">Hakkımda</a>
+          <a href="#contact" data-en="Contact" data-tr="İletişim">İletişim</a>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/mertcihanbayır" target="_blank">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/MertCihan74" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="mailto:mertcihanbayir@gmail.com">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Mert Cihan Bayır. Tüm hakları saklıdır.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
