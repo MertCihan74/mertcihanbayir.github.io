@@ -80,13 +80,15 @@ body {
   height: 70px;
 }
 
-.nav-logo .logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.nav-logo .logo-image {
+  height: 40px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  transition: var(--transition-fast);
+}
+
+[data-theme="dark"] .nav-logo .logo-image {
+  filter: brightness(1);
 }
 
 .nav-menu {
@@ -1013,13 +1015,15 @@ section {
   margin-bottom: 2rem;
 }
 
-.footer-logo .logo-text {
-  font-size: 2rem;
-  font-weight: 700;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.footer-logo .logo-image {
+  height: 50px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  transition: var(--transition-fast);
+}
+
+[data-theme="dark"] .footer-logo .logo-image {
+  filter: brightness(1);
 }
 
 .footer-links {
