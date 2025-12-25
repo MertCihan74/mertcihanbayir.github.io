@@ -1852,11 +1852,13 @@ section {
     gap: 1rem;
     max-width: 100%;
     width: 100%;
-    padding: 0 1rem;
+    padding: 0;
   }
 
   .contact-method {
     min-height: 160px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .contact-details {
