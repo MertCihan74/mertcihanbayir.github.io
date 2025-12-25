@@ -81,7 +81,7 @@ body {
 }
 
 .nav-logo .logo-image {
-  height: 40px;
+  height: 45px;
   width: auto;
   filter: brightness(0) invert(1);
   transition: var(--transition-fast);
@@ -910,22 +910,20 @@ section {
   align-items: start;
 }
 
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  max-width: 100%;
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.2rem;
+  gap: 1.5rem;
+  padding: 1.5rem;
   background: var(--bg-secondary);
   border-radius: 12px;
   transition: var(--transition-fast);
-  min-height: 80px;
 }
 
 .contact-item:hover {
@@ -934,16 +932,15 @@ section {
 }
 
 .contact-icon {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   background: var(--gradient-primary);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: white;
-  flex-shrink: 0;
 }
 
 .contact-details h3 {
@@ -1016,7 +1013,7 @@ section {
 }
 
 .footer-logo .logo-image {
-  height: 50px;
+  height: 40px;
   width: auto;
   filter: brightness(0) invert(1);
   transition: var(--transition-fast);
@@ -1074,35 +1071,37 @@ section {
 
 /* Theme Toggle */
 .theme-toggle {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 60px;
-  height: 60px;
-  background: var(--gradient-primary);
-  border: none;
-  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-lg);
   transition: var(--transition-fast);
-  z-index: 1000;
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1);
+  background: var(--bg-primary);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .theme-toggle i {
-  font-size: 1.5rem;
-  color: white;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
   transition: var(--transition-fast);
 }
 
 .theme-toggle .fa-sun {
   display: none;
+}
+
+.theme-toggle:hover i {
+  color: var(--primary-color);
 }
 
 [data-theme="dark"] .theme-toggle .fa-moon {
@@ -1154,6 +1153,15 @@ section {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
     font-weight: 500;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .theme-toggle i {
+    font-size: 1.1rem;
   }
 
   .nav-toggle {
@@ -1241,16 +1249,10 @@ section {
     font-size: 1.8rem;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
   .contact-item {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
-    padding: 1rem;
   }
 
   .hero-buttons {
