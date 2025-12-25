@@ -1536,37 +1536,13 @@ section {
   }
 
   .scroll-indicator {
-    bottom: 1.5rem;
-  }
-
-  .scroll-mouse {
-    width: 28px;
-    height: 42px;
-    border-width: 3px;
-  }
-
-  .scroll-wheel {
-    width: 6px;
-    height: 10px;
-    border-radius: 3px;
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
   .scroll-indicator {
-    bottom: 1rem;
-  }
-
-  .scroll-mouse {
-    width: 24px;
-    height: 36px;
-    border-width: 2px;
-  }
-
-  .scroll-wheel {
-    width: 4px;
-    height: 8px;
-    border-radius: 2px;
+    display: none;
   }
 
   .hero-name {
