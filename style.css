@@ -91,16 +91,11 @@ body {
 }
 
 .nav-logo .logo-card {
-  background: var(--bg-primary);
-  border-radius: 8px;
-  padding: 8px;
-  box-shadow: var(--shadow);
+  background: white;
+  border-radius: 6px;
+  padding: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: var(--transition-fast);
-}
-
-[data-theme="dark"] .nav-logo .logo-card {
-  background: var(--bg-secondary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .nav-logo .logo-image {
@@ -1042,16 +1037,11 @@ section {
 }
 
 .footer-logo .logo-card {
-  background: var(--bg-primary);
-  border-radius: 6px;
-  padding: 6px;
-  box-shadow: var(--shadow);
+  background: white;
+  border-radius: 4px;
+  padding: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: var(--transition-fast);
-}
-
-[data-theme="dark"] .footer-logo .logo-card {
-  background: var(--bg-secondary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .footer-logo .logo-image {
