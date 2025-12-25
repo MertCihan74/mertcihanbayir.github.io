@@ -63,12 +63,12 @@ function toggleTheme() {
 
 // Navigation
 function smoothScroll(target) {
-  // Handle both hash (#section) and path (/section) formats
+  // Convert hash to selector
   let selector = target;
-  if (target.startsWith('/#')) {
-    selector = target.substring(1); // Remove leading slash
-  } else if (target.startsWith('#')) {
+  if (target.startsWith('#')) {
     selector = target;
+  } else if (target.startsWith('/#')) {
+    selector = target.substring(1); // Remove leading slash
   }
 
   const element = document.querySelector(selector);
@@ -79,8 +79,9 @@ function smoothScroll(target) {
       behavior: 'smooth'
     });
 
-    // Update URL without page reload
-    history.replaceState(null, null, target);
+    // Update URL to clean path format (e.g., /projects instead of #projects)
+    const path = target.startsWith('#') ? target.replace('#', '/') : target;
+    history.replaceState(null, null, path);
   }
 }
 
