@@ -1536,7 +1536,7 @@ section {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .scroll-indicator {
     display: none;
   }
@@ -1849,7 +1849,7 @@ section {
 
   .contact-methods {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
     max-width: 100%;
     width: 100%;
     padding: 0;
