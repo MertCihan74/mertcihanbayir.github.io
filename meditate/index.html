@@ -44,13 +44,25 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            overflow: hidden;
         }
 
-        #meditation-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: opacity 1s ease;
+        #player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        @media (min-aspect-ratio: 16/9) {
+            #player { height: 56.25vw; }
+        }
+
+        @media (max-aspect-ratio: 16/9) {
+            #player { width: 177.78vh; }
         }
 
         /* Overlay UI */
@@ -207,11 +219,7 @@
 <body>
 
     <div class="video-container">
-        <!-- The video source path is as requested -->
-        <video id="meditation-video" loop playsinline>
-            <source src="../video/meditation_lo-fi.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div id="player"></div>
     </div>
 
     <div class="ui-container">
@@ -224,7 +232,7 @@
         </div>
 
         <div class="center-content">
-            <h1 class="greeting" id="greeting-text">Just Breathe</h1>
+            <h1 class="greeting" id="greeting-text">Just For Ezgi</h1>
             <div class="controls">
                 <button class="control-btn" id="play-pause-btn" title="Play/Pause">
                     <i class="fas fa-play"></i>
@@ -243,55 +251,92 @@
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        let player;
+        const videoId = 'ZF62CK5KcqA';
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'loop': 1,
+                    'playlist': videoId,
+                    'modestbranding': 1,
+                    'mute': 0,
+                    'iv_load_policy': 3,
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Player is ready
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const iconPlay = playPauseBtn.querySelector('i');
+            
+            // Try to autoplay
+            event.target.playVideo();
+            iconPlay.className = 'fas fa-pause';
+        }
+
+        function onPlayerStateChange(event) {
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const iconPlay = playPauseBtn.querySelector('i');
+            const centerContent = document.querySelector('.center-content');
+
+            if (event.data == YT.PlayerState.PLAYING) {
+                iconPlay.className = 'fas fa-pause';
+                setTimeout(() => {
+                    if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+                        centerContent.classList.add('fade-out');
+                    }
+                }, 3000);
+            } else {
+                iconPlay.className = 'fas fa-play';
+                centerContent.classList.remove('fade-out');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('meditation-video');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const muteBtn = document.getElementById('mute-btn');
             const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const iconPlay = playPauseBtn.querySelector('i');
             const iconMute = muteBtn.querySelector('i');
             const centerContent = document.querySelector('.center-content');
-            
-            let userInteracted = false;
 
-            // Language support (simple version based on localStorage or default)
-            // You can integrate with the main site's logic if moved to a global script
-            
             // Toggle Play/Pause
             playPauseBtn.addEventListener('click', () => {
-                if (video.paused) {
-                    video.play();
-                    iconPlay.className = 'fas fa-pause';
-                    // Auto fade out controls for immersion after playing
-                    setTimeout(() => {
-                        if (!video.paused) {
-                            centerContent.classList.add('fade-out');
-                        }
-                    }, 3000);
+                if (player.getPlayerState() == YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
                 } else {
-                    video.pause();
-                    iconPlay.className = 'fas fa-play';
-                    centerContent.classList.remove('fade-out');
+                    player.playVideo();
                 }
             });
 
-            // Bring controls back on mouse move
-            document.addEventListener('mousemove', () => {
-                centerContent.classList.remove('fade-out');
-                // Debounced fade out could go here
-            });
-            document.addEventListener('click', () => {
-                centerContent.classList.remove('fade-out');
+            // Bring controls back on interaction
+            ['mousemove', 'mousedown', 'keydown', 'touchstart'].forEach(event => {
+                document.addEventListener(event, () => {
+                    centerContent.classList.remove('fade-out');
+                });
             });
 
             // Toggle Mute
             muteBtn.addEventListener('click', () => {
-                video.muted = !video.muted;
-                if (video.muted) {
-                    iconMute.className = 'fas fa-volume-mute';
-                } else {
+                if (player.isMuted()) {
+                    player.unMute();
                     iconMute.className = 'fas fa-volume-up';
+                } else {
+                    player.mute();
+                    iconMute.className = 'fas fa-volume-mute';
                 }
             });
 
@@ -299,7 +344,7 @@
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch(err => {
-                        console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                        console.log(`Error: ${err.message}`);
                     });
                     fullscreenBtn.querySelector('i').className = 'fas fa-compress';
                 } else {
@@ -308,12 +353,6 @@
                         fullscreenBtn.querySelector('i').className = 'fas fa-expand';
                     }
                 }
-            });
-
-            // Handle video end (loop is on, but just in case)
-            video.addEventListener('ended', () => {
-                iconPlay.className = 'fas fa-play';
-                centerContent.classList.remove('fade-out');
             });
         });
     </script>
