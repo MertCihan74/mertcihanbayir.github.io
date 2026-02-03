@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E & M - Özel Alan</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Inter:wght@400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Particles -->
+    <div id="tsparticles"></div>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen">
+        <div class="login-card animate__animated animate__fadeInDown">
+            <h1>❤️ Hoşgeldin</h1>
+            <p style="margin-bottom: 20px; color: #555;">Burası sadece bizim için.</p>
+            <div class="input-group" style="justify-content: center; margin-bottom: 1rem;">
+                <input type="password" id="password-input" placeholder="Şifremiz..." style="max-width: 200px;">
+            </div>
+            <button id="login-btn" class="btn-login">
+                <i class="fas fa-heart"></i> Giriş Yap
+            </button>
+            <p id="auth-error" style="color: #e84118; margin-top: 10px; font-size: 0.9rem; font-weight: 500;"></p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container hidden animate__animated animate__fadeIn">
+        <header>
+            <div class="logo">
+                <h2>Ezgi & Mert</h2>
+            </div>
+            <button id="logout-btn" class="nav-btn logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Çıkış
+            </button>
+        </header>
+
+        <nav class="nav-pills">
+            <button class="nav-btn active" data-target="countdown">
+                <i class="fas fa-hourglass-half"></i> Sayaç
+            </button>
+            <button class="nav-btn" data-target="gallery">
+                <i class="fas fa-images"></i> Anılar
+            </button>
+            <button class="nav-btn" data-target="letters">
+                <i class="fas fa-envelope-open-text"></i> Mektuplar
+            </button>
+            <button class="nav-btn" data-target="bucketlist">
+                <i class="fas fa-list-ul"></i> Yapılacaklar
+            </button>
+            <button class="nav-btn" data-target="watchlist">
+                <i class="fas fa-film"></i> İzle
+            </button>
+        </nav>
+
+        <main class="dashboard-grid">
+            <!-- Countdown Section -->
+            <section id="countdown" class="section-content dashboard-card full-width">
+                <h3><i class="fas fa-heart"></i>Sayacımız</h3>
+                
+                <!-- Toggle Button -->
+                <button id="toggle-date-btn" class="btn-text-only" style="margin: 0 auto; display: block; color: #777; background: none; border: none; cursor: pointer; text-decoration: underline;">
+                    <i class="fas fa-calendar-alt"></i> Tarihi Değiştir
+                </button>
+
+                <!-- Hidden Input Area -->
+                <div id="date-input-area" class="input-group" style="margin-top: 20px; display: none;">
+                    <input type="date" id="anniversary-date">
+                    <button class="btn-add" id="set-date-btn">Kaydet</button>
+                </div>
+
+                <div id="countdown-display">
+                    <!-- JS will populate this -->
+                    <div class="time-unit">
+                        <span class="number" id="days">0</span>
+                        <span class="label">Gün</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section id="gallery" class="section-content dashboard-card full-width hidden">
+                <h3><i class="fas fa-camera"></i> Anı Galerisi</h3>
+                <div class="input-group file-input-group">
+                    <input type="file" id="photo-upload" accept="image/*" class="file-input-hidden">
+                    <label for="photo-upload" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i> Fotoğraf Seç
+                    </label>
+                    <span id="file-name" style="margin-left: 10px; color: #555;"></span>
+                    <button class="btn-add" id="upload-photo-btn">Yükle</button>
+                </div>
+                <div id="gallery-grid" class="gallery-grid">
+                    <!-- Photos go here -->
+                </div>
+            </section>
+
+            <!-- Letters Section -->
+            <section id="letters" class="section-content dashboard-card hidden">
+                <h3><i class="fas fa-feather"></i> Aşk Mektupları</h3>
+                <div class="input-group">
+                    <textarea id="letter-content" placeholder="İçinden geçenleri yaz..." rows="3"></textarea>
+                    <button class="btn-add" id="send-letter-btn">Gönder</button>
+                </div>
+                <div id="letters-grid" class="letters-grid">
+                    <!-- Letters go here -->
+                </div>
+            </section>
+
+            <!-- Bucket List Section -->
+            <section id="bucketlist" class="section-content dashboard-card hidden">
+                <h3><i class="fas fa-map-marked-alt"></i> Yapılacaklar Listesi</h3>
+                <div class="input-group">
+                    <input type="text" id="bucket-input" placeholder="Hayalimiz...">
+                    <button class="btn-add" id="add-bucket-btn">Ekle</button>
+                </div>
+                <div id="bucket-list" class="item-list">
+                    <!-- Items go here -->
+                </div>
+            </section>
+
+            <!-- Watchlist Section -->
+            <section id="watchlist" class="section-content dashboard-card hidden">
+                <h3><i class="fas fa-video"></i> Film & Dizi Listesi</h3>
+                <div class="input-group">
+                    <input type="text" id="watch-input" placeholder="Ne izleyelim?">
+                    <button class="btn-add" id="add-watch-btn">Ekle</button>
+                </div>
+                <div id="watch-list" class="item-list">
+                    <!-- Items go here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2.0.6/tsparticles.slim.bundle.min.js"></script>
+
+    <!-- App Logic -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
