@@ -445,11 +445,13 @@ header {
 .letter-card.open .letter-content {
     opacity: 1;
     transform: scale(1);
-    max-height: 1000px; /* arbitrary large to fit text */
+    max-height: 70vh; /* Responsive height limit */
+    overflow-y: auto; /* Scroll if content exceeds height */
     word-break: break-word; /* Prevent overflow */
     line-height: 1.8;
     color: #2f3542;
     white-space: pre-wrap; /* Preserve line breaks */
+    padding-right: 10px; /* Visual spacing for scrollbar */
 }
 
 .letter-card.open small {
