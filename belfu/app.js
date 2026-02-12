@@ -447,3 +447,90 @@ window.deleteItem = (collection, id) => {
         }
     });
 };
+
+// --- Secret Area Logic ---
+let secretKey = null;
+
+function initSecretArea() {
+    // Secret Button Trigger
+    const btn = document.getElementById('secret-btn');
+    if(btn) {
+        btn.addEventListener('click', async () => {
+            const { value: password } = await Swal.fire({
+                title: '❤️🔥 Gizli Alan',
+                input: 'password',
+                inputLabel: 'Şifreni gir',
+                inputPlaceholder: 'Şifre...',
+                confirmButtonText: 'Giriş',
+                background: '#000',
+                color: '#ff0000',
+                confirmButtonColor: '#ff0000',
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                },
+                customClass: {
+                    input: 'swal-secret-input' 
+                }
+            });
+
+            if (password) {
+                verifySecretPassword(password);
+            }
+        });
+    }
+}
+
+async function verifySecretPassword(password) {
+    const secretRef = db.collection('settings').doc('secret_access');
+    const doc = await secretRef.get();
+
+    if (!doc.exists) {
+        // First time setup
+        await Swal.fire({
+            title: 'Yeni Şifre Belirle',
+            text: 'Bu şifre gizli alan için kullanılacak. Unutma!',
+            icon: 'info',
+            confirmButtonColor: '#ff0000',
+            background: '#000',
+            color: '#fff'
+        });
+        // We hash it for storage comparison, but we need the PLAIN password for encryption key.
+        // Simple hash for storage auth check:
+        const hash = CryptoJS.SHA256(password).toString();
+        await secretRef.set({ hash: hash });
+        
+        secretKey = password;
+        openSecretArea();
+    } else {
+        const storedHash = doc.data().hash;
+        const inputHash = CryptoJS.SHA256(password).toString();
+
+        if (storedHash === inputHash) {
+            // Unlocked!
+            sessionStorage.setItem('secret_key', password); // Temporary session key
+            
+            // Redirect with animation delay if we want, but page transition handles it.
+            window.location.href = 'secret.html';
+        } else {
+            Swal.fire({
+                title: 'Hatalı Şifre!',
+                icon: 'error',
+                confirmButtonColor: '#ff0000',
+                background: '#000',
+                color: '#fff'
+            });
+        }
+    }
+}
+
+// Legacy functions removed as we moved to secret.html
+// But keep them if we revert? No, clean up.
+// Actually, I'll comment them out or remove them to avoid clutter. 
+// User wants separate page.
+
+
+// Initialize listener right away since app.js is loaded at end of body
+document.addEventListener('DOMContentLoaded', () => {
+    initSecretArea();
+});

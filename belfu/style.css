@@ -697,3 +697,159 @@ div.swal2-popup {
     .gallery-grid { grid-template-columns: 1fr; } /* Single column gallery on very small screens */
     .nav-btn { width: 100%; text-align: center; } /* Stack nav buttons */
 }
+
+/* Secret Area Styles */
+#secret-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    z-index: 9999;
+    cursor: pointer;
+    /* transparent */
+    background: transparent; 
+}
+
+/* Secret Area Overlay */
+#secret-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex; /* Centering */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: url('narnia_background.png') no-repeat center center/cover !important;
+}
+
+#secret-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Overlay for readability */
+    z-index: -1;
+}
+
+/* Secret Theme Override - Narnia Style */
+.secret-theme h1 {
+    color: #C0C0C0; /* Silver/Gray */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    animation: mist 3s infinite alternate;
+    font-size: 3.5rem;
+}
+
+@keyframes mist {
+    0% { opacity: 0.8; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    100% { opacity: 1; text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+}
+
+.secret-theme .input-group {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+}
+
+.secret-theme .input-group input {
+    background: rgba(255, 255, 240, 0.9) !important; /* Parchment color */
+    color: #4a3b2a !important; /* Dark brown text */
+    border: 2px solid #8b7355 !important; /* Antique border */
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    box-shadow: 0 0 15px rgba(139, 115, 85, 0.5);
+}
+
+.secret-theme .input-group input::placeholder {
+    color: #8b7355 !important;
+    opacity: 0.7;
+}
+
+.secret-theme .btn-secret {
+    background: linear-gradient(135deg, #8b7355, #4a3b2a) !important;
+    color: #f0e68c !important; /* Khaki text */
+    border: 1px solid #2e2618 !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.secret-theme .btn-secret:hover {
+    background: linear-gradient(135deg, #a08462, #5c4a35) !important;
+    transform: scale(1.05);
+}
+
+.secret-list {
+    width: 100%;
+    max-width: 800px;
+    height: 60vh;
+    overflow-y: auto;
+    background: rgba(255, 255, 240, 0.85) !important; /* Parchment transparent */
+    background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png'), linear-gradient(#e6dbc4 1px, transparent 1px) !important;
+    background-blend-mode: multiply;
+    margin-top: 2rem;
+    border: 4px double #8b7355;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.secret-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.secret-list::-webkit-scrollbar-track {
+    background: #4a3b2a; 
+    border-radius: 5px;
+}
+ 
+.secret-list::-webkit-scrollbar-thumb {
+    background: #8b7355; 
+    border-radius: 5px;
+    border: 1px solid #2e2618;
+}
+
+.secret-list::before {
+    display: none; /* Remove red line */
+}
+
+.secret-list .list-item {
+    color: #4a3b2a !important;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    border-bottom: 1px dashed #8b7355;
+    padding: 10px;
+}
+
+.secret-list .list-item:hover {
+    background: rgba(139, 115, 85, 0.1) !important;
+}
+
+.secret-list .checkbox-completed {
+    border-color: #8b7355 !important;
+}
+
+.secret-list .checkbox-completed i {
+    color: #4a3b2a !important;
+}
+
+.secret-list .list-item.completed {
+    background: rgba(139, 115, 85, 0.2) !important;
+}
+
+.secret-list .list-item.completed .checkbox-completed {
+    background: #8b7355 !important;
+}
+
+.secret-list .list-item.completed span {
+    color: #8b7355 !important;
+    text-decoration-color: #8b7355 !important;
+}
