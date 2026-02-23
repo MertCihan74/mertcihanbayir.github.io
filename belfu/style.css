@@ -233,7 +233,12 @@ header {
 
 /* Custom File Input */
 .file-input-hidden {
-    display: none;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
 }
 
 .file-input-label {
