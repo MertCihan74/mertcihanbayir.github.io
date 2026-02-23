@@ -104,8 +104,12 @@ function setupEventListeners() {
     
     // File Input Name Logic
     document.getElementById('photo-upload').addEventListener('change', function() {
-        const fileName = this.files[0] ? this.files[0].name : '';
-        document.getElementById('file-name').textContent = fileName;
+        if (this.files.length > 1) {
+            document.getElementById('file-name').textContent = `${this.files.length} görsel seçildi`;
+        } else {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('file-name').textContent = fileName;
+        }
     });
 
     // Feature: Countdown
@@ -219,55 +223,72 @@ function startTimer(targetDate) {
 
 // 2. Gallery (Base64)
 async function uploadPhoto() {
-    const file = document.getElementById('photo-upload').files[0];
-    if (!file) return;
+    const fileInput = document.getElementById('photo-upload');
+    const files = fileInput.files;
+    if (!files || files.length === 0) return;
 
-    // Compress and Convert to Base64
+    const btn = document.getElementById('upload-photo-btn');
+    const originalBtnText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yükleniyor...';
+    btn.disabled = true;
+
     try {
-        const base64 = await compressImage(file);
-        
-        db.collection('gallery').add({
-            image: base64,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-            document.getElementById('photo-upload').value = '';
-        }).catch(err => {
-            console.error("Upload error:", err);
-            Swal.fire({
-                icon: 'error',
-                title: 'Hata',
-                text: 'Fotoğraf yüklenemedi. Boyut sınırı aşılmış olabilir.',
-                confirmButtonColor: '#ff3366'
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const base64 = await compressImage(file);
+            
+            await db.collection('gallery').add({
+                image: base64,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
+        }
+        
+        fileInput.value = '';
+        document.getElementById('file-name').textContent = '';
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Başarılı',
+            text: files.length > 1 ? `${files.length} fotoğraf başarıyla yüklendi.` : 'Fotoğraf başarıyla yüklendi.',
+            timer: 1500,
+            showConfirmButton: false
         });
-
-    } catch (e) {
-        console.error("Compression error:", e);
+    } catch (err) {
+        console.error("Upload error:", err);
         Swal.fire({
             icon: 'error',
             title: 'Hata',
-            text: 'Görüntü işleme hatası.',
+            text: 'Yükleme sırasında bir hata oluştu. Lütfen tekrar deneyin.',
             confirmButtonColor: '#ff3366'
         });
+    } finally {
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
     }
 }
 
 function compressImage(file) {
     return new Promise((resolve, reject) => {
-        const MAX_WIDTH = 800; // Limit width to reduce size
+        const MAX_DIMENSION = 800; // Limit dimensions to reduce size (helps mobile)
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (event) => {
             const img = new Image();
-            img.src = event.target.result;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
 
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
+                if (width > height) {
+                    if (width > MAX_DIMENSION) {
+                        height *= MAX_DIMENSION / width;
+                        width = MAX_DIMENSION;
+                    }
+                } else {
+                    if (height > MAX_DIMENSION) {
+                        width *= MAX_DIMENSION / height;
+                        height = MAX_DIMENSION;
+                    }
                 }
 
                 canvas.width = width;
@@ -275,9 +296,11 @@ function compressImage(file) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                // Compress to JPEG with 0.7 quality
-                resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                // Compress to JPEG with 0.8 quality
+                resolve(canvas.toDataURL('image/jpeg', 0.8)); 
             };
+            img.onerror = (error) => reject(error);
+            img.src = event.target.result;
         };
         reader.onerror = (error) => reject(error);
     });
