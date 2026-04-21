@@ -662,8 +662,17 @@ async function showCityPopup(cityId, cityName) {
         html: `
             <p style="margin-bottom: 20px; font-size: 0.9rem; color: #555;">Bu güzel şehre ne zaman gittik?</p>
             <input type="date" id="swal-input-date" class="swal2-input" required>
-            <p style="margin-top: 15px; margin-bottom: 5px; font-size: 0.9rem; color: #555;">Bir anı bırak:</p>
-            <input type="file" id="swal-input-file" class="swal2-file" accept="image/*" required>
+            <div style="display:flex; justify-content:space-between; margin-top:20px; gap:10px;">
+                <div style="flex:1; text-align:left;">
+                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555;">Mert'in Anısı:</p>
+                    <input type="file" id="swal-file-mert" class="swal2-file" accept="image/*" style="font-size:0.75rem; width:100%; padding:0;">
+                </div>
+                <div style="flex:1; text-align:left;">
+                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555;">Ezgi'nin Anısı:</p>
+                    <input type="file" id="swal-file-ezgi" class="swal2-file" accept="image/*" style="font-size:0.75rem; width:100%; padding:0;">
+                </div>
+            </div>
+            <p style="font-size:0.75rem; color:#888; margin-top:15px; margin-bottom:0;">* Fotoğraflar zorunlu değildir, sonradan da ekleyebilirsiniz.</p>
         `,
         focusConfirm: false,
         showCancelButton: true,
@@ -672,13 +681,14 @@ async function showCityPopup(cityId, cityName) {
         confirmButtonColor: '#ff4757',
         preConfirm: () => {
             const date = document.getElementById('swal-input-date').value;
-            const fileInput = document.getElementById('swal-input-file');
+            const fileMert = document.getElementById('swal-file-mert').files[0];
+            const fileEzgi = document.getElementById('swal-file-ezgi').files[0];
             
-            if (!date || !fileInput.files || fileInput.files.length === 0) {
-                Swal.showValidationMessage('Lütfen hem tarih hem de fotoğraf seçin!');
+            if (!date) {
+                Swal.showValidationMessage('Lütfen en azından ziyaret tarihini seçin!');
                 return false;
             }
-            return { date: date, file: fileInput.files[0] };
+            return { date: date, fileMert: fileMert, fileEzgi: fileEzgi };
         }
     });
 
@@ -693,14 +703,15 @@ async function showCityPopup(cityId, cityName) {
         });
 
         try {
-            // Use existing compressImage
-            const compressedBase64 = await compressImage(formValues.file);
+            const compressedMert = formValues.fileMert ? await compressImage(formValues.fileMert) : null;
+            const compressedEzgi = formValues.fileEzgi ? await compressImage(formValues.fileEzgi) : null;
             
             await db.collection('visited_cities').add({
                 cityId: cityId,
                 cityName: cityName,
                 visitDate: formValues.date,
-                photo: compressedBase64,
+                photoMert: compressedMert,
+                photoEzgi: compressedEzgi,
                 author: localStorage.getItem('belfu_user') || 'Anonim',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
@@ -726,12 +737,32 @@ async function showCityPopup(cityId, cityName) {
 function showVisitedCityPopup(cityId, cityName, data) {
     const formattedDate = new Date(data.visitDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
     
+    const actualMertPhoto = data.photoMert || data.photo;
+    
+    // HTML Generators for Photos
+    const mertHTML = actualMertPhoto 
+        ? `<div style="flex:1;"><img src="${actualMertPhoto}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Mert</p></div>`
+        : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #ff4757; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(255, 71, 87, 0.05);">
+             <p style="font-size:0.7rem; color:#ff4757; margin-bottom:8px; font-weight:500;">Mert Eksik 😢</p>
+             <button onclick="addPhotoLater('${data.id}', 'photoMert')" style="background:#ff4757; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(255,71,87,0.3); transition:all 0.2s;">Ekle</button>
+           </div>`;
+           
+    const ezgiHTML = data.photoEzgi 
+        ? `<div style="flex:1;"><img src="${data.photoEzgi}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Ezgi</p></div>`
+        : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #70a1ff; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(112, 161, 255, 0.05);">
+             <p style="font-size:0.7rem; color:#70a1ff; margin-bottom:8px; font-weight:500;">Ezgi Eksik 😢</p>
+             <button onclick="addPhotoLater('${data.id}', 'photoEzgi')" style="background:#70a1ff; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(112,161,255,0.3); transition:all 0.2s;">Ekle</button>
+           </div>`;
+
     Swal.fire({
         title: cityName,
         html: `
             <p style="color: #ff4757; font-weight: 500; margin-bottom: 2px;">${formattedDate}</p>
-            <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Ekleyen: ${data.author}</p>
-            <img src="${data.photo}" class="visited-popup-img" alt="${cityName}">
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">Ekleyen: ${data.author}</p>
+            <div style="display:flex; gap:15px;">
+                ${mertHTML}
+                ${ezgiHTML}
+            </div>
         `,
         showCancelButton: true,
         showConfirmButton: false,
@@ -759,3 +790,45 @@ function showVisitedCityPopup(cityId, cityName, data) {
         }
     });
 }
+
+// Add missing photo later
+window.addPhotoLater = async function(docId, fieldName) {
+    const { value: file } = await Swal.fire({
+        title: 'Fotoğraf Seçiniz',
+        input: 'file',
+        inputAttributes: {
+            'accept': 'image/*',
+            'aria-label': 'Fotoğraf seç'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Yükle',
+        cancelButtonText: 'İptal',
+        confirmButtonColor: '#ff4757'
+    });
+
+    if (file) {
+        Swal.fire({
+            title: 'Yükleniyor...',
+            text: 'Fotoğranız işleniyor',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading() }
+        });
+
+        try {
+            const compressed = await compressImage(file);
+            await db.collection('visited_cities').doc(docId).update({
+                [fieldName]: compressed
+            });
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı',
+                text: 'Fotoğraf eklendi!',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } catch (err) {
+            console.error(err);
+            Swal.fire('Hata', 'Fotoğraf yüklenemedi.', 'error');
+        }
+    }
+};
