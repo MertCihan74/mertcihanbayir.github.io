@@ -13,7 +13,7 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -64,6 +64,9 @@
             </button>
             <button class="nav-btn" data-target="watchlist">
                 <i class="fas fa-film"></i> İzle
+            </button>
+            <button class="nav-btn" data-target="travelmap">
+                <i class="fas fa-map-marked-alt"></i> Harita
             </button>
         </nav>
 
@@ -143,6 +146,26 @@
                 <div id="watch-list" class="item-list">
                     <!-- Items go here -->
                 </div>
+            </section>
+
+            <!-- Travel Map Section -->
+            <section id="travelmap" class="section-content dashboard-card full-width hidden">
+                <h3><i class="fas fa-map"></i> Türkiye Haritası</h3>
+                
+                <div class="travel-stats animate__animated animate__fadeIn">
+                    <div class="stat-badge">
+                        <i class="fas fa-map-marker-alt"></i> Ziyaret Edilen: <span id="visited-count">0</span>/81
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="visited-progress" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="travel-map-container" id="map-container">
+                    <!-- SVG map will be loaded here via JS -->
+                </div>
+                
+                <div id="city-tooltip" class="city-tooltip hidden"></div>
             </section>
         </main>
     </div>

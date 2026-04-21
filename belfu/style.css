@@ -858,3 +858,196 @@ div.swal2-popup {
     color: #8b7355 !important;
     text-decoration-color: #8b7355 !important;
 }
+
+/* Travel Map */
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.travel-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 2rem;
+}
+
+.stat-badge {
+    background: var(--primary);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    max-width: 400px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-light), var(--primary));
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.travel-map-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    padding: 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.4);
+    box-shadow: inset 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* SVG Map Styling */
+.travel-map-container svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+    overflow: visible; /* To allow scale effects without clipping */
+    animation: svgEntrance 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes svgEntrance {
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Unvisited cities */
+#svg-turkey g.turkey g[id] path {
+    fill: rgba(200, 200, 200, 0.4) !important;
+    stroke: #ffffff;
+    stroke-width: 1px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transform-origin: center center;
+    transform-box: fill-box;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawPath 2s ease forwards 0.5s;
+}
+
+@keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+}
+
+#svg-turkey g.turkey g[id]:hover path {
+    fill: rgba(112, 161, 255, 0.5) !important; /* Sweet blue transparent hover */
+    transform: scale(1.02) translateY(-2px);
+    stroke-width: 1.5px;
+    stroke: #70a1ff;
+    filter: drop-shadow(0 8px 15px rgba(112, 161, 255, 0.4));
+    z-index: 10;
+}
+
+/* Visited cities */
+#svg-turkey g.turkey g[id].visited path {
+    fill: #70a1ff !important; /* Sweet blue visited */
+    stroke: #ffffff;
+    stroke-width: 1.5px;
+    filter: drop-shadow(0 0 10px rgba(112, 161, 255, 0.6));
+    animation: visitedPulse 3s infinite alternate, drawPath 2s ease forwards 0.5s;
+}
+
+#svg-turkey g.turkey g[id].visited:hover path {
+    fill: #1e90ff !important; /* Slightly darker sweet blue on hover */
+    transform: scale(1.03) translateY(-3px);
+    filter: drop-shadow(0 0 20px rgba(30, 144, 255, 0.9));
+    animation: none;
+    z-index: 20;
+    stroke-width: 2px;
+}
+
+@keyframes visitedPulse {
+    0% { filter: drop-shadow(0 0 4px rgba(112, 161, 255, 0.4)); }
+    100% { filter: drop-shadow(0 0 10px rgba(112, 161, 255, 0.7)); }
+}
+
+/* Tooltip */
+.city-tooltip {
+    position: absolute;
+    background: rgba(47, 53, 66, 0.9);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transform: translate(-50%, -120%);
+    backdrop-filter: blur(4px);
+    transition: opacity 0.2s;
+}
+
+.city-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(47, 53, 66, 0.9) transparent transparent transparent;
+}
+
+.city-tooltip .tooltip-date {
+    display: block;
+    font-size: 0.75rem;
+    color: #ffcccc;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* Popup image styling */
+.visited-popup-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 15px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .travel-map-container {
+        padding: 0.5rem;
+        overflow-x: auto;
+    }
+    
+    .travel-map-container svg {
+        min-width: 600px; /* Force minimum width to allow scrolling if too small */
+    }
+}

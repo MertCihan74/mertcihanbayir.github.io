@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Navigation
-const pages = ['countdown', 'gallery', 'letters', 'bucketlist', 'watchlist'];
+const pages = ['countdown', 'gallery', 'letters', 'bucketlist', 'watchlist', 'travelmap'];
 
 function setupEventListeners() {
     // Login
@@ -162,6 +162,7 @@ function showApp() {
     loadLetters();
     loadList('bucketlist', 'bucket-list');
     loadList('watchlist', 'watch-list');
+    initTravelMap();
 }
 
 function switchPage(pageId) {
@@ -557,3 +558,204 @@ async function verifySecretPassword(password) {
 document.addEventListener('DOMContentLoaded', () => {
     initSecretArea();
 });
+
+// --- Travel Map Feature ---
+let visitedCitiesMap = {}; // local cache
+
+async function initTravelMap() {
+    const mapContainer = document.getElementById('map-container');
+    if (!mapContainer || mapContainer.querySelector('svg')) return; // Zaten yüklüyse çık
+
+    try {
+        // Fetch SVG
+        const response = await fetch('turkey-map.svg');
+        const svgContent = await response.text();
+        mapContainer.innerHTML = svgContent;
+
+        setupMapInteractions();
+        loadVisitedCities();
+    } catch (error) {
+        console.error('Harita yüklenemedi:', error);
+        mapContainer.innerHTML = '<p style="text-align:center; color:red;">Harita yüklenirken bir hata oluştu.</p>';
+    }
+}
+
+function setupMapInteractions() {
+    const tooltip = document.getElementById('city-tooltip');
+    
+    // Yalnızca ID'si olan tanımlı şehir gruplarına event ekle, ana kapsayıcıya ekleme.
+    document.querySelectorAll('#svg-turkey g.turkey g[id]').forEach(cityGroup => {
+        const cityId = cityGroup.id;
+        const cityName = cityGroup.getAttribute('data-city-name');
+        
+        // Mouse events for Tooltip
+        cityGroup.addEventListener('mouseenter', (e) => {
+            e.stopPropagation(); // Event'in parent gruplara geçmesini engelle
+            tooltip.innerHTML = cityName;
+            if (visitedCitiesMap[cityId]) {
+                const date = new Date(visitedCitiesMap[cityId].visitDate).toLocaleDateString('tr-TR');
+                tooltip.innerHTML += `<br><span class="tooltip-date" style="font-size:0.8rem; opacity:0.8">${date}</span>`;
+            }
+            tooltip.classList.remove('hidden');
+        });
+        
+        cityGroup.addEventListener('mousemove', (e) => {
+            e.stopPropagation();
+            // Sabit pozisyonlama kullanarak ekran üzerindeki kesin lokasyona koyuyoruz
+            tooltip.style.position = 'fixed';
+            tooltip.style.left = e.clientX + 'px';
+            tooltip.style.top = e.clientY + 'px';
+        });
+        
+        cityGroup.addEventListener('mouseleave', (e) => {
+            e.stopPropagation();
+            tooltip.classList.add('hidden');
+        });
+
+        // Click Event
+        cityGroup.addEventListener('click', (e) => {
+            e.stopPropagation(); // En önemli kısım: Tıklamanın ana harita grubuna geçip sahte kayıt açmasını engeller
+            if (visitedCitiesMap[cityId]) {
+                showVisitedCityPopup(cityId, cityName, visitedCitiesMap[cityId]);
+            } else {
+                showCityPopup(cityId, cityName);
+            }
+        });
+    });
+}
+
+function loadVisitedCities() {
+    db.collection('visited_cities').onSnapshot(snapshot => {
+        visitedCitiesMap = {};
+        let count = 0;
+        
+        // Reset all cities visually
+        document.querySelectorAll('#svg-turkey g').forEach(g => {
+            g.classList.remove('visited');
+        });
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            visitedCitiesMap[data.cityId] = { id: doc.id, ...data };
+            
+            // Mark visually
+            const cityGroup = document.getElementById(data.cityId);
+            if (cityGroup) {
+                cityGroup.classList.add('visited');
+            }
+            count++;
+        });
+        
+        updateTravelStats(count);
+    });
+}
+
+function updateTravelStats(count) {
+    document.getElementById('visited-count').innerText = count;
+    const progress = (count / 81) * 100;
+    document.getElementById('visited-progress').style.width = `${progress}%`;
+}
+
+async function showCityPopup(cityId, cityName) {
+    const { value: formValues } = await Swal.fire({
+        title: `❤️ ${cityName}`,
+        html: `
+            <p style="margin-bottom: 20px; font-size: 0.9rem; color: #555;">Bu güzel şehre ne zaman gittik?</p>
+            <input type="date" id="swal-input-date" class="swal2-input" required>
+            <p style="margin-top: 15px; margin-bottom: 5px; font-size: 0.9rem; color: #555;">Bir anı bırak:</p>
+            <input type="file" id="swal-input-file" class="swal2-file" accept="image/*" required>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Kaydet',
+        cancelButtonText: 'İptal',
+        confirmButtonColor: '#ff4757',
+        preConfirm: () => {
+            const date = document.getElementById('swal-input-date').value;
+            const fileInput = document.getElementById('swal-input-file');
+            
+            if (!date || !fileInput.files || fileInput.files.length === 0) {
+                Swal.showValidationMessage('Lütfen hem tarih hem de fotoğraf seçin!');
+                return false;
+            }
+            return { date: date, file: fileInput.files[0] };
+        }
+    });
+
+    if (formValues) {
+        Swal.fire({
+            title: 'Yükleniyor...',
+            text: 'Anı haritaya işleniyor',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            // Use existing compressImage
+            const compressedBase64 = await compressImage(formValues.file);
+            
+            await db.collection('visited_cities').add({
+                cityId: cityId,
+                cityName: cityName,
+                visitDate: formValues.date,
+                photo: compressedBase64,
+                author: localStorage.getItem('belfu_user') || 'Anonim',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı',
+                text: `${cityName} haritaya eklendi!`,
+                timer: 1500,
+                showConfirmButton: false
+            });
+        } catch (err) {
+            console.error("Şehir eklenirken hata:", err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: 'Şehir kaydedilemedi.',
+            });
+        }
+    }
+}
+
+function showVisitedCityPopup(cityId, cityName, data) {
+    const formattedDate = new Date(data.visitDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    Swal.fire({
+        title: cityName,
+        html: `
+            <p style="color: #ff4757; font-weight: 500; margin-bottom: 2px;">${formattedDate}</p>
+            <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px;">Ekleyen: ${data.author}</p>
+            <img src="${data.photo}" class="visited-popup-img" alt="${cityName}">
+        `,
+        showCancelButton: true,
+        showConfirmButton: false,
+        cancelButtonText: 'Kapat',
+        showDenyButton: true,
+        denyButtonText: '<i class="fas fa-trash"></i> Sil',
+        denyButtonColor: '#ff7675'
+    }).then((result) => {
+        if (result.isDenied) {
+            Swal.fire({
+                title: 'Emin misin?',
+                text: `${cityName} haritadan silinecek.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff7675',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'İptal'
+            }).then((delResult) => {
+                if (delResult.isConfirmed) {
+                    db.collection('visited_cities').doc(data.id).delete();
+                    Swal.fire('Silindi!', '', 'success');
+                }
+            });
+        }
+    });
+}
