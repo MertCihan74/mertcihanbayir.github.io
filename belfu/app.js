@@ -271,39 +271,42 @@ async function uploadPhoto() {
 function compressImage(file) {
     return new Promise((resolve, reject) => {
         const MAX_DIMENSION = 800; // Limit dimensions to reduce size (helps mobile)
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
 
-                if (width > height) {
-                    if (width > MAX_DIMENSION) {
-                        height *= MAX_DIMENSION / width;
-                        width = MAX_DIMENSION;
-                    }
-                } else {
-                    if (height > MAX_DIMENSION) {
-                        width *= MAX_DIMENSION / height;
-                        height = MAX_DIMENSION;
-                    }
+            if (width > height) {
+                if (width > MAX_DIMENSION) {
+                    height *= MAX_DIMENSION / width;
+                    width = MAX_DIMENSION;
                 }
+            } else {
+                if (height > MAX_DIMENSION) {
+                    width *= MAX_DIMENSION / height;
+                    height = MAX_DIMENSION;
+                }
+            }
 
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                
-                // Compress to JPEG with 0.8 quality
-                resolve(canvas.toDataURL('image/jpeg', 0.8)); 
-            };
-            img.onerror = (error) => reject(error);
-            img.src = event.target.result;
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            const compressed = canvas.toDataURL('image/jpeg', 0.8);
+            URL.revokeObjectURL(objectUrl);
+            resolve(compressed);
         };
-        reader.onerror = (error) => reject(error);
+        
+        img.onerror = (error) => {
+            URL.revokeObjectURL(objectUrl);
+            reject(error);
+        };
+        
+        img.src = objectUrl;
     });
 }
 
@@ -662,14 +665,14 @@ async function showCityPopup(cityId, cityName) {
         html: `
             <p style="margin-bottom: 20px; font-size: 0.9rem; color: #555;">Bu güzel şehre ne zaman gittik?</p>
             <input type="date" id="swal-input-date" class="swal2-input" required>
-            <div style="display:flex; justify-content:space-between; margin-top:20px; gap:10px;">
-                <div style="flex:1; text-align:left;">
-                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555;">Mert'in Anısı:</p>
-                    <input type="file" id="swal-file-mert" class="swal2-file" accept="image/*" style="font-size:0.75rem; width:100%; padding:0;">
+            <div class="swal-file-grid" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
+                <div style="text-align:left;">
+                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555; font-weight:bold;">Mert'in Anısı:</p>
+                    <input type="file" id="swal-file-mert" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%;">
                 </div>
-                <div style="flex:1; text-align:left;">
-                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555;">Ezgi'nin Anısı:</p>
-                    <input type="file" id="swal-file-ezgi" class="swal2-file" accept="image/*" style="font-size:0.75rem; width:100%; padding:0;">
+                <div style="text-align:left;">
+                    <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555; font-weight:bold;">Ezgi'nin Anısı:</p>
+                    <input type="file" id="swal-file-ezgi" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%;">
                 </div>
             </div>
             <p style="font-size:0.75rem; color:#888; margin-top:15px; margin-bottom:0;">* Fotoğraflar zorunlu değildir, sonradan da ekleyebilirsiniz.</p>

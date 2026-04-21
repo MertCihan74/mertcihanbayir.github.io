@@ -1051,3 +1051,21 @@ div.swal2-popup {
         min-width: 600px; /* Force minimum width to allow scrolling if too small */
     }
 }
+
+/* Custom SWAL File Input for Mobile */
+.custom-swal-file {
+    padding: 12px !important;
+    border: 2px dashed var(--primary) !important;
+    border-radius: 12px !important;
+    background: #fffafa !important;
+    color: var(--primary) !important;
+    font-weight: 600 !important;
+    margin-top: 5px !important;
+    cursor: pointer;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.custom-swal-file:active {
+    background: #ffebeb !important;
+}
