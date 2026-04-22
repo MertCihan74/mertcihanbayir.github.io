@@ -668,11 +668,11 @@ async function showCityPopup(cityId, cityName) {
             <div class="swal-file-grid" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
                 <div style="text-align:left;">
                     <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555; font-weight:bold;">Mert'in Anısı:</p>
-                    <input type="file" id="swal-file-mert" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%;">
+                    <input type="file" id="swal-file-mert" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%; cursor: pointer; position: relative; z-index: 1000;" onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();">
                 </div>
                 <div style="text-align:left;">
                     <p style="margin-bottom: 5px; font-size: 0.8rem; color: #555; font-weight:bold;">Ezgi'nin Anısı:</p>
-                    <input type="file" id="swal-file-ezgi" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%;">
+                    <input type="file" id="swal-file-ezgi" class="custom-swal-file" accept="image/*" style="font-size:0.8rem; width:100%; cursor: pointer; position: relative; z-index: 1000;" onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();">
                 </div>
             </div>
             <p style="font-size:0.75rem; color:#888; margin-top:15px; margin-bottom:0;">* Fotoğraflar zorunlu değildir, sonradan da ekleyebilirsiniz.</p>
