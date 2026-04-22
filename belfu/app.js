@@ -747,20 +747,14 @@ function showVisitedCityPopup(cityId, cityName, data) {
         ? `<div style="flex:1;"><img src="${actualMertPhoto}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Mert</p></div>`
         : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #ff4757; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(255, 71, 87, 0.05);">
              <p style="font-size:0.7rem; color:#ff4757; margin-bottom:8px; font-weight:500;">Mert Eksik 😢</p>
-             <label onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();" style="background:#ff4757; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(255,71,87,0.3); transition:all 0.2s;">
-                 Ekle
-                 <input type="file" accept="image/*" style="position: absolute; width: 1px; height: 1px; opacity: 0;" onchange="handleDirectUpload('${data.id}', 'photoMert', this)" onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();">
-             </label>
+             <button onclick="triggerFileInput('photoMert', '${data.id}')" style="background:#ff4757; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(255,71,87,0.3); transition:all 0.2s;">Ekle</button>
            </div>`;
            
     const ezgiHTML = data.photoEzgi 
         ? `<div style="flex:1;"><img src="${data.photoEzgi}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Ezgi</p></div>`
         : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #70a1ff; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(112, 161, 255, 0.05);">
              <p style="font-size:0.7rem; color:#70a1ff; margin-bottom:8px; font-weight:500;">Ezgi Eksik 😢</p>
-             <label onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();" style="background:#70a1ff; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(112,161,255,0.3); transition:all 0.2s;">
-                 Ekle
-                 <input type="file" accept="image/*" style="position: absolute; width: 1px; height: 1px; opacity: 0;" onchange="handleDirectUpload('${data.id}', 'photoEzgi', this)" onclick="event.stopPropagation();" ontouchstart="event.stopPropagation();">
-             </label>
+             <button onclick="triggerFileInput('photoEzgi', '${data.id}')" style="background:#70a1ff; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(112,161,255,0.3); transition:all 0.2s;">Ekle</button>
            </div>`;
 
     Swal.fire({
@@ -834,4 +828,14 @@ window.handleDirectUpload = async function(docId, fieldName, inputElement) {
         console.error(err);
         Swal.fire('Hata', 'Fotoğraf yüklenemedi. Boyut çok büyük olabilir.', 'error');
     }
+};
+
+window.triggerFileInput = function(fieldName, docId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        window.handleDirectUpload(docId, fieldName, e.target);
+    };
+    input.click();
 };
