@@ -270,7 +270,7 @@ async function uploadPhoto() {
 
 function compressImage(file) {
     return new Promise((resolve, reject) => {
-        const MAX_DIMENSION = 800; // Limit dimensions to reduce size (helps mobile)
+        const MAX_DIMENSION = 600; // Limit dimensions to reduce size (helps mobile, avoids 1MB limit)
         const img = new Image();
         const objectUrl = URL.createObjectURL(file);
         
@@ -296,7 +296,7 @@ function compressImage(file) {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
             
-            const compressed = canvas.toDataURL('image/jpeg', 0.8);
+            const compressed = canvas.toDataURL('image/jpeg', 0.6); // Lower quality to avoid payload limits
             URL.revokeObjectURL(objectUrl);
             resolve(compressed);
         };
@@ -747,14 +747,20 @@ function showVisitedCityPopup(cityId, cityName, data) {
         ? `<div style="flex:1;"><img src="${actualMertPhoto}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Mert</p></div>`
         : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #ff4757; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(255, 71, 87, 0.05);">
              <p style="font-size:0.7rem; color:#ff4757; margin-bottom:8px; font-weight:500;">Mert Eksik 😢</p>
-             <button onclick="addPhotoLater('${data.id}', 'photoMert')" style="background:#ff4757; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(255,71,87,0.3); transition:all 0.2s;">Ekle</button>
+             <label style="background:#ff4757; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(255,71,87,0.3); transition:all 0.2s;">
+                 Ekle
+                 <input type="file" accept="image/*" style="display:none;" onchange="handleDirectUpload('${data.id}', 'photoMert', this)">
+             </label>
            </div>`;
            
     const ezgiHTML = data.photoEzgi 
         ? `<div style="flex:1;"><img src="${data.photoEzgi}" style="width:100%; border-radius:8px; object-fit:cover; aspect-ratio:1; border:2px solid #ddd; box-shadow:0 4px 6px rgba(0,0,0,0.1);"><p style="font-size:0.8rem; margin:5px 0 0 0; color:#555;">Ezgi</p></div>`
         : `<div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:2px dashed #70a1ff; border-radius:8px; aspect-ratio:1; padding:10px; background:rgba(112, 161, 255, 0.05);">
              <p style="font-size:0.7rem; color:#70a1ff; margin-bottom:8px; font-weight:500;">Ezgi Eksik 😢</p>
-             <button onclick="addPhotoLater('${data.id}', 'photoEzgi')" style="background:#70a1ff; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(112,161,255,0.3); transition:all 0.2s;">Ekle</button>
+             <label style="background:#70a1ff; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer; box-shadow:0 2px 4px rgba(112,161,255,0.3); transition:all 0.2s;">
+                 Ekle
+                 <input type="file" accept="image/*" style="display:none;" onchange="handleDirectUpload('${data.id}', 'photoEzgi', this)">
+             </label>
            </div>`;
 
     Swal.fire({
@@ -794,44 +800,38 @@ function showVisitedCityPopup(cityId, cityName, data) {
     });
 }
 
-// Add missing photo later
-window.addPhotoLater = async function(docId, fieldName) {
-    const { value: file } = await Swal.fire({
-        title: 'Fotoğraf Seçiniz',
-        input: 'file',
-        inputAttributes: {
-            'accept': 'image/*',
-            'aria-label': 'Fotoğraf seç'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Yükle',
-        cancelButtonText: 'İptal',
-        confirmButtonColor: '#ff4757'
+// Add missing photo later directly without extra popup
+window.handleDirectUpload = async function(docId, fieldName, inputElement) {
+    const file = inputElement.files[0];
+    if (!file) return;
+
+    Swal.fire({
+        title: 'Yükleniyor...',
+        text: 'Fotoğrafınız işleniyor',
+        allowOutsideClick: false,
+        didOpen: () => { Swal.showLoading() }
     });
 
-    if (file) {
-        Swal.fire({
-            title: 'Yükleniyor...',
-            text: 'Fotoğranız işleniyor',
-            allowOutsideClick: false,
-            didOpen: () => { Swal.showLoading() }
+    try {
+        const compressed = await compressImage(file);
+        await db.collection('visited_cities').doc(docId).update({
+            [fieldName]: compressed
         });
-
-        try {
-            const compressed = await compressImage(file);
-            await db.collection('visited_cities').doc(docId).update({
-                [fieldName]: compressed
-            });
-            Swal.fire({
-                icon: 'success',
-                title: 'Başarılı',
-                text: 'Fotoğraf eklendi!',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        } catch (err) {
-            console.error(err);
-            Swal.fire('Hata', 'Fotoğraf yüklenemedi.', 'error');
-        }
+        Swal.fire({
+            icon: 'success',
+            title: 'Başarılı',
+            text: 'Fotoğraf eklendi!',
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            // Re-open the popup so the user sees the updated photo instantly
+            const cityData = Object.values(visitedCitiesMap).find(c => c.id === docId);
+            if (cityData) {
+                showVisitedCityPopup(cityData.cityId, cityData.cityName, cityData);
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        Swal.fire('Hata', 'Fotoğraf yüklenemedi. Boyut çok büyük olabilir.', 'error');
     }
 };
