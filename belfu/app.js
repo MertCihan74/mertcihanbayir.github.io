@@ -834,8 +834,18 @@ window.triggerFileInput = function(fieldName, docId) {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
+    input.style.position = 'fixed';
+    input.style.top = '-100px';
+    input.style.left = '-100px';
+    document.body.appendChild(input);
+
     input.onchange = function(e) {
         window.handleDirectUpload(docId, fieldName, e.target);
+        document.body.removeChild(input);
     };
-    input.click();
+
+    // Trigger click after a tiny timeout to ensure DOM placement is registered
+    setTimeout(() => {
+        input.click();
+    }, 10);
 };
