@@ -275,41 +275,79 @@ h1 {
 }
 
 @media (max-width: 600px) {
-    .seat {
-        width: 20px;
-        height: 20px;
-        font-size: 0.55rem;
+    .main-container {
+        padding: 25px 15px;
     }
-    
+
+    .bus-scroll-wrapper {
+        overflow-x: hidden; /* Dikeyde kaydırmaya gerek kalmayacak */
+    }
+
     .bus-container {
-        padding: 10px 10px 10px 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 80px 20px 30px 20px; /* Üstte şoför için yer */
+        border-radius: 60px 60px 20px 20px; /* Üst kavisli (ön), alt düz (arka) */
+        width: auto;
+        min-width: 280px;
+        margin: 0 auto;
     }
 
     .bus-layout {
-        gap: 3px;
+        flex-direction: column; /* Sütunlar alt alta (satır satır) dizilecek */
+        gap: 15px;
     }
 
     .bus-column {
-        gap: 3px;
+        flex-direction: row; /* Koltuklar yan yana dizilecek */
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        gap: 0;
+    }
+
+    .seat-group {
+        flex-direction: row; /* Yan yana 2 koltuk */
+        gap: 6px;
     }
 
     .corridor {
-        height: 12px;
+        width: 30px; /* Dikey otobüste koridor genişliği */
+        height: 20px; /* Satırlar arası boşluk gibi davranacak */
+    }
+
+    .seat {
+        width: 42px;
+        height: 42px;
+        font-size: 0.9rem;
+        border-radius: 4px 4px 12px 12px; /* Arka taraf (sırtlık) aşağıda */
     }
 
     .middle-door {
-        width: 20px;
-        height: 43px; /* 20 * 2 + 3 gap */
-        font-size: 0.4rem;
+        width: 160px; /* 42*4 + boşluklar kadar geniş */
+        height: 40px;
+        writing-mode: horizontal-tb;
+        transform: none;
+        margin: 10px 0;
     }
 
     .steering-wheel {
-        left: 8px;
-        font-size: 0.5rem;
+        top: 25px;
+        left: 50%;
+        bottom: auto;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: 8px;
     }
-    
-    .subtitle {
-        font-size: 0.8rem;
+
+    .steering-wheel i {
+        margin-bottom: 0;
+    }
+
+    .legend {
+        flex-wrap: wrap;
+        gap: 10px 20px;
     }
 }
 
