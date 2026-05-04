@@ -274,80 +274,50 @@ h1 {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 950px) {
     .main-container {
-        padding: 25px 15px;
+        padding: 20px 10px;
     }
 
     .bus-scroll-wrapper {
-        overflow-x: hidden; /* Dikeyde kaydırmaya gerek kalmayacak */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Kaydırmayı tamamen kapatıyoruz */
+        width: 100%;
+        min-height: 250px;
     }
 
     .bus-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 80px 20px 30px 20px; /* Üstte şoför için yer */
-        border-radius: 60px 60px 20px 20px; /* Üst kavisli (ön), alt düz (arka) */
-        width: auto;
-        min-width: 280px;
-        margin: 0 auto;
+        transform: scale(0.7); /* Orta boy ekranlarda %70 küçült */
+        transform-origin: center center;
+        margin: 0;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 650px) {
+    .bus-container {
+        transform: scale(0.45); /* Telefonlarda %45 küçült (tüm koltuklar sığar) */
+    }
+    
+    .bus-scroll-wrapper {
+        min-height: 180px;
     }
 
-    .bus-layout {
-        flex-direction: column; /* Sütunlar alt alta (satır satır) dizilecek */
-        gap: 15px;
-    }
-
-    .bus-column {
-        flex-direction: row; /* Koltuklar yan yana dizilecek */
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        gap: 0;
-    }
-
-    .seat-group {
-        flex-direction: row; /* Yan yana 2 koltuk */
-        gap: 6px;
-    }
-
-    .corridor {
-        width: 30px; /* Dikey otobüste koridor genişliği */
-        height: 20px; /* Satırlar arası boşluk gibi davranacak */
-    }
-
-    .seat {
-        width: 42px;
-        height: 42px;
-        font-size: 0.9rem;
-        border-radius: 4px 4px 12px 12px; /* Arka taraf (sırtlık) aşağıda */
-    }
-
-    .middle-door {
-        width: 160px; /* 42*4 + boşluklar kadar geniş */
-        height: 40px;
-        writing-mode: horizontal-tb;
-        transform: none;
-        margin: 10px 0;
-    }
-
-    .steering-wheel {
-        top: 25px;
-        left: 50%;
-        bottom: auto;
-        transform: translateX(-50%);
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    .steering-wheel i {
-        margin-bottom: 0;
+    h1 {
+        font-size: 1.4rem;
     }
 
     .legend {
-        flex-wrap: wrap;
-        gap: 10px 20px;
+        font-size: 0.75rem;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .bus-container {
+        transform: scale(0.38); /* Çok küçük telefonlarda biraz daha küçült */
     }
 }
 
