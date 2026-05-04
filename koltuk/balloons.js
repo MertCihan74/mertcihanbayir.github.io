@@ -1,4 +1,18 @@
 (function initBalloons() {
+    /** innerHeight sabit; visualViewport resize ile güncellenmez (balon sıçraması önlenir) */
+    function setBalloonRiseDistance() {
+        var h = window.innerHeight;
+        document.documentElement.style.setProperty(
+            '--balloon-rise-px',
+            Math.round(h * 1.34) + 'px'
+        );
+    }
+
+    setBalloonRiseDistance();
+    window.addEventListener('orientationchange', function () {
+        setTimeout(setBalloonRiseDistance, 350);
+    });
+
     const sky = document.getElementById('balloon-sky');
     if (!sky) return;
 
@@ -9,7 +23,8 @@
 
     var w = window.innerWidth;
     var count = w < 480 ? 9 : w < 900 ? 12 : 16;
-    var hues = ['-8deg', '0deg', '14deg', '24deg', '38deg', '195deg', '205deg', '318deg', '335deg'];
+    var huesWarm = ['-8deg', '0deg', '14deg', '24deg', '38deg', '318deg', '335deg'];
+    var huesSky = ['-4deg', '0deg', '6deg', '12deg', '198deg', '205deg'];
 
     for (var i = 0; i < count; i++) {
         var left = 3 + Math.random() * 94;
@@ -18,7 +33,9 @@
         var scale = 0.26 + Math.random() * 0.4;
         var driftPx = -40 + Math.random() * 80;
         var drift = driftPx + 'px';
-        var hue = hues[Math.floor(Math.random() * hues.length)];
+        var isSky = Math.random() > 0.45;
+        var hueList = isSky ? huesSky : huesWarm;
+        var hue = hueList[Math.floor(Math.random() * hueList.length)];
         var envW = 20 + Math.random() * 12;
         var envH = 26 + Math.random() * 12;
         var opacityMid = (0.4 + Math.random() * 0.22).toFixed(3);
@@ -37,7 +54,8 @@
         inner.style.setProperty('--opacity-mid', opacityMid);
 
         var env = document.createElement('div');
-        env.className = 'balloon-envelope';
+        env.className =
+            'balloon-envelope' + (isSky ? ' balloon-envelope--sky' : ' balloon-envelope--warm');
         env.style.setProperty('--env-w', envW + 'px');
         env.style.setProperty('--env-h', envH + 'px');
 
