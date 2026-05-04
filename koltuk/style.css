@@ -41,12 +41,8 @@ body {
 
 .balloon {
     position: absolute;
-    background-image: url('balloon.png');
-    background-size: contain;
-    background-repeat: no-repeat;
     opacity: 0.8;
-    mix-blend-mode: multiply; /* Beyaz arka planı yok eder */
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.05));
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
 }
 
 @keyframes floatUp {
