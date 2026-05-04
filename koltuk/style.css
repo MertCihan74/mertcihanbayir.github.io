@@ -1,30 +1,26 @@
-html, body {
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    font-family: 'Outfit', sans-serif;
-    background: #f0f2f5;
 }
 
 body {
+    font-family: 'Outfit', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Üstten başlasın, uzun sayfalarda sorun olmasın */
-    padding: 20px 0;
 }
 
 .main-container {
-    width: 95%;
-    max-width: 1100px;
+    width: 100%;
+    max-width: 1100px; /* Otobüsün tamamının sığması için artırıldı */
     background: white;
-    padding: 40px 20px;
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     text-align: center;
-    margin: 20px auto;
-    position: relative;
-    z-index: 1;
 }
 
 h1 {
@@ -65,13 +61,6 @@ h1 {
 .seat-legend.female { background: #e74c3c; border-color: #c0392b; }
 .seat-legend.pending { background: #f1c40f; border-color: #f39c12; }
 
-.bus-scroll-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    padding: 10px 0 20px 0; /* Altta scrollbar için boşluk */
-    -webkit-overflow-scrolling: touch;
-}
-
 .bus-container {
     background: #ecf0f1;
     border: 4px solid #bdc3c7;
@@ -80,7 +69,6 @@ h1 {
     position: relative;
     margin: 0 auto;
     display: inline-block; /* Genişliği içeriğe göre ayarlaması için */
-    white-space: nowrap; /* İçeriğin alt satıra geçmesini engeller */
 }
 
 .steering-wheel {
@@ -200,14 +188,14 @@ h1 {
 .seat.taken::after {
     content: attr(data-name);
     position: absolute;
-    bottom: 100%;
+    bottom: 110%;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0,0,0,0.8);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
@@ -219,139 +207,7 @@ h1 {
     opacity: 1;
 }
 
-/* --- Responsive Scaling for Mobile --- */
-@media (max-width: 950px) {
-    .main-container {
-        padding: 15px 10px;
-    }
-
-    .bus-container {
-        padding: 15px 20px 15px 50px;
-        border-width: 3px;
-        border-radius: 40px 10px 10px 40px;
-    }
-
-    .seat {
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-        border-radius: 4px;
-    }
-
-    .bus-layout {
-        gap: 6px;
-    }
-
-    .bus-column {
-        gap: 4px;
-    }
-
-    .corridor {
-        height: 20px;
-    }
-
-    .middle-door {
-        width: 30px;
-        height: 64px; /* 30 * 2 + 4 gap */
-        font-size: 0.5rem;
-    }
-
-    .steering-wheel {
-        left: 15px;
-        font-size: 0.7rem;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .legend {
-        gap: 10px;
-        margin-bottom: 20px;
-        font-size: 0.8rem;
-    }
-
-    .seat-legend {
-        width: 15px;
-        height: 15px;
-    }
-}
-
-@media (max-width: 950px) {
-    .main-container {
-        padding: 20px 10px;
-    }
-
-    .bus-scroll-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden; /* Kaydırmayı tamamen kapatıyoruz */
-        width: 100%;
-        min-height: 250px;
-    }
-
-    .bus-container {
-        transform: scale(0.7); /* Orta boy ekranlarda %70 küçült */
-        transform-origin: center center;
-        margin: 0;
-        white-space: nowrap;
-    }
-}
-
-@media (max-width: 650px) {
-    .bus-container {
-        transform: scale(0.45); /* Telefonlarda %45 küçült (tüm koltuklar sığar) */
-    }
-    
-    .bus-scroll-wrapper {
-        min-height: 180px;
-    }
-
-    h1 {
-        font-size: 1.4rem;
-    }
-
-    .legend {
-        font-size: 0.75rem;
-        gap: 8px;
-    }
-}
-
-@media (max-width: 400px) {
-    .bus-container {
-        transform: scale(0.38); /* Çok küçük telefonlarda biraz daha küçült */
-    }
-}
-
-
-/* 3. Adım: Final Mobil Düzenlemeler ve Performans Ayarları */
-.bus-container {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-
-.swal2-popup {
-    font-family: 'Outfit', sans-serif !important;
-    border-radius: 20px !important;
-    padding: 1.5rem !important;
-}
-
-@media (max-width: 600px) {
-    .swal2-popup {
-        width: 90% !important;
-        padding: 1rem !important;
-        font-size: 0.85rem !important;
-    }
-    .swal2-title {
-        font-size: 1.3rem !important;
-    }
-    .swal2-input {
-        font-size: 0.9rem !important;
-        height: 2.5rem !important;
-    }
-}
-
+/* SweetAlert customization */
 .swal2-radio-container {
     display: flex;
     justify-content: center;
@@ -393,4 +249,118 @@ h1 {
     border-color: #e74c3c;
     background: rgba(231, 76, 60, 0.1);
     color: #e74c3c;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 1100px) {
+    .main-container {
+        padding: 20px 10px;
+    }
+    
+    .seat { 
+        width: 35px; 
+        height: 35px; 
+        font-size: 0.8rem; 
+        border-radius: 8px 3px 3px 8px;
+    }
+    
+    .middle-door { 
+        width: 35px; 
+        height: 78px; /* 35*2 + 8 gap */
+    }
+    
+    .bus-container { 
+        padding: 15px 20px 15px 60px; 
+    }
+    
+    .bus-layout { 
+        gap: 8px; 
+    }
+
+    .corridor {
+        height: 25px;
+    }
+
+    .steering-wheel {
+        bottom: 25px;
+        left: 15px;
+    }
+}
+
+@media (max-width: 850px) {
+    .seat { 
+        width: 25px; 
+        height: 25px; 
+        font-size: 0.7rem; 
+        border-radius: 6px 2px 2px 6px;
+        border-width: 1px;
+    }
+    
+    .middle-door { 
+        width: 25px; 
+        height: 58px; /* 25*2 + 8 gap */
+        font-size: 0.6rem;
+    }
+    
+    .bus-container { 
+        padding: 10px 15px 10px 45px; 
+        border-radius: 40px 10px 10px 40px;
+        border-width: 2px;
+    }
+    
+    .bus-layout { 
+        gap: 5px; 
+    }
+    
+    .corridor { 
+        height: 15px; 
+    }
+    
+    .steering-wheel { 
+        bottom: 15px; 
+        left: 10px; 
+        font-size: 0.5rem; 
+    }
+    
+    .steering-wheel i { 
+        font-size: 1rem; 
+    }
+
+    .legend {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .seat { 
+        width: 18px; 
+        height: 18px; 
+        font-size: 0.5rem; 
+    }
+    
+    .middle-door { 
+        width: 18px; 
+        height: 44px; /* 18*2 + 8 gap */
+    }
+
+    .seat-group {
+        gap: 4px;
+    }
+
+    .bus-layout {
+        gap: 4px;
+    }
+    
+    .bus-container { 
+        padding: 8px 10px 8px 35px; 
+    }
+
+    .corridor {
+        height: 12px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
 }
