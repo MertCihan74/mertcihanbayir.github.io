@@ -62,6 +62,9 @@ body {
     background: none;
     border-radius: 0;
     box-shadow: none;
+    /* Animasyon scale ile küçülse bile okunabilir minimum (detayların görünmesi için) */
+    min-width: 52px;
+    min-height: 64px;
 }
 
 .balloon-envelope--svg::before,
@@ -74,6 +77,8 @@ body {
     height: 100%;
     display: block;
     overflow: visible;
+    /* Küçük ikon görünümünü azaltmak için stroke/shape netliği */
+    shape-rendering: geometricPrecision;
     filter: drop-shadow(0 4px 6px rgba(25, 18, 12, 0.28)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
 }
 

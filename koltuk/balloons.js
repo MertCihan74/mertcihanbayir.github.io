@@ -262,18 +262,20 @@
 
     var w = window.innerWidth;
     var count = w < 480 ? 9 : w < 900 ? 12 : 16;
+    /** Küçük ölçek + küçük taban boyut çarpılınca SVG tek renk leke + kutu gibi görünüyor */
+    var sizeBoost = w < 480 ? 1 : w < 900 ? 1.12 : 1.22;
 
     for (var i = 0; i < count; i++) {
         var left = 3 + Math.random() * 94;
         var dur = 40 + Math.random() * 55;
         var delay = -Math.random() * dur;
-        var scale = 0.26 + Math.random() * 0.4;
+        var scale = 0.52 + Math.random() * 0.34;
         var driftPx = -40 + Math.random() * 80;
         var drift = driftPx + 'px';
         var pal = BALLOON_PALETTES[Math.floor(Math.random() * BALLOON_PALETTES.length)];
         var hueNudge = ((Math.random() * 14 - 7) | 0) + 'deg';
-        var envW = 24 + Math.random() * 14;
-        var envH = 30 + Math.random() * 14;
+        var envW = Math.round((48 + Math.random() * 34) * sizeBoost);
+        var envH = Math.round((58 + Math.random() * 38) * sizeBoost);
         var opacityMid = (0.4 + Math.random() * 0.22).toFixed(3);
         var uid = 'u' + i + '_' + ((Math.random() * 1e6) | 0);
 
