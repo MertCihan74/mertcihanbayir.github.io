@@ -193,13 +193,28 @@ async function handleSeatClick(seatNum, seatEl) {
         });
 
         // Doğrulama ve İsim Soyisim girişi
-        const { value: formValues, isDismissed } = await Swal.fire({
+        const { value: formValues, isDismissed, dismiss } = await Swal.fire({
             title: 'Yolcu Doğrulama',
             html: `
-                <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">Lütfen tura kayıtlı olduğunuz bilgileri giriniz.</p>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 15px;">Lütfen tura kayıtlı olduğunuz bilgileri giriniz.<br>
+                <span style="color: #e74c3c; font-weight: bold; font-size: 0.85rem;">İşlemi tamamlamak için <span id="swal-timer">120</span> saniyeniz var.</span></p>
                 <input id="swal-input-name" class="swal2-input" placeholder="Adınız Soyadınız">
                 <input id="swal-input-email" class="swal2-input" type="email" placeholder="Kayıtlı E-posta Adresiniz">
             `,
+            timer: 120000,
+            timerProgressBar: true,
+            didOpen: () => {
+                const timerSpan = Swal.getHtmlContainer().querySelector('#swal-timer');
+                const timerInterval = setInterval(() => {
+                    if (Swal.getTimerLeft() && timerSpan) {
+                        timerSpan.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+                    }
+                }, 1000);
+                Swal.getPopup().timerInterval = timerInterval;
+            },
+            willClose: () => {
+                clearInterval(Swal.getPopup().timerInterval);
+            },
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Onayla',
@@ -262,6 +277,10 @@ async function handleSeatClick(seatNum, seatEl) {
         if (isDismissed || !formValues) {
             // İşlem iptal edildiyse veya kapatıldıysa koltuğu boşa çıkar
             await seatRef.delete();
+            
+            if (dismiss === Swal.DismissReason.timer) {
+                Swal.fire('Süre Doldu', 'Koltuk ayırma süreniz dolduğu için işleminiz iptal edildi. Koltuk tekrar boşa çıkarıldı.', 'info');
+            }
         } else {
             // Eğer koltuk değiştirme işlemiyse onay iste
             if (formValues.changeFrom) {
