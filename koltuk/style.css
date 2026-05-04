@@ -40,7 +40,10 @@ body {
     left: var(--left);
     bottom: -12vh;
     transform: translateX(-50%);
-    filter: hue-rotate(var(--hue, 0deg)) saturate(1.06);
+}
+
+.balloon-unit--minimal {
+    filter: saturate(1.07);
 }
 
 .balloon-inner {
@@ -57,14 +60,15 @@ body {
     height: var(--env-h, 36px);
 }
 
-/* Detaylı SVG balon (balloons.js) */
+/* Minimal tatlı balon SVG (balloons.js) */
 .balloon-envelope--svg {
     background: none;
     border-radius: 0;
     box-shadow: none;
-    /* Animasyon scale ile küçülse bile okunabilir minimum (detayların görünmesi için) */
-    min-width: 52px;
-    min-height: 64px;
+    min-width: 42px;
+    min-height: 52px;
+    max-width: 88px;
+    max-height: 110px;
 }
 
 .balloon-envelope--svg::before,
@@ -77,33 +81,17 @@ body {
     height: 100%;
     display: block;
     overflow: visible;
-    /* Küçük ikon görünümünü azaltmak için stroke/shape netliği */
     shape-rendering: geometricPrecision;
-    filter: drop-shadow(0 4px 6px rgba(25, 18, 12, 0.28)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+    filter: drop-shadow(0 3px 5px rgba(40, 32, 55, 0.12));
 }
 
-.balloon-burner-glow {
-    transform-origin: center;
-    animation: balloon-burner-pulse 2.8s ease-in-out infinite alternate;
-}
-
-@keyframes balloon-burner-pulse {
-    from {
-        opacity: 0.5;
-    }
-    to {
-        opacity: 0.92;
-    }
+.balloon-envelope--svg .balloon-svg--minimal {
+    filter: drop-shadow(0 2px 4px rgba(50, 40, 70, 0.1));
 }
 
 @media (prefers-reduced-motion: reduce) {
     .balloon-sky {
         display: none;
-    }
-
-    .balloon-burner-glow {
-        animation: none;
-        opacity: 0.75;
     }
 }
 

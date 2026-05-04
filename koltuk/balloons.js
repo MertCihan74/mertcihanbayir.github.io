@@ -20,269 +20,179 @@
         return;
     }
 
-    /** Kapadokya tarzı çeşitli gövde renkleri (gradient + sepet + brülör uyumu) */
-    var BALLOON_PALETTES = [
+    /** Minimal tatlı pastel paletler — gövde gradient + uyumlu sepet/ip */
+    var SWEET_PALETTES = [
+        {
+            kind: 'cool',
+            stops: { a: '#c4b5d4', b: '#f3eef9', c: '#9b8ab5' },
+            basket: '#a898b8',
+            basketStroke: 'rgba(70, 55, 95, 0.35)',
+            rope: 'rgba(85, 70, 105, 0.42)',
+        },
         {
             kind: 'warm',
-            stops: { a: '#b03a2e', b: '#f9e79f', c: '#4a1c1a' },
-            stripe: 'rgba(255,255,255,0.48)',
-            bask: '#5d4035',
-            baskEdge: 'rgba(25,15,8,0.35)',
-            burnerMid: '#f7c948',
-            burnerEnd: '#c0392b',
+            stops: { a: '#f5b8c4', b: '#fff5f7', c: '#d9889a' },
+            basket: '#c49aa8',
+            basketStroke: 'rgba(130, 70, 90, 0.32)',
+            rope: 'rgba(120, 75, 95, 0.4)',
         },
         {
             kind: 'cool',
-            stops: { a: '#1f6dad', b: '#d4e6f1', c: '#0a2c4a' },
-            stripe: 'rgba(255,255,255,0.5)',
-            bask: '#3d5a4a',
-            baskEdge: 'rgba(0,0,0,0.28)',
-            burnerMid: '#85c1e9',
-            burnerEnd: '#154360',
-        },
-        {
-            kind: 'warm',
-            stops: { a: '#7d3c98', b: '#f5eef8', c: '#4a235a' },
-            stripe: 'rgba(255,255,255,0.46)',
-            bask: '#5d4e6b',
-            baskEdge: 'rgba(30,15,35,0.38)',
-            burnerMid: '#e8daef',
-            burnerEnd: '#6c3483',
+            stops: { a: '#a8d5e8', b: '#f0f9ff', c: '#6eb5d4' },
+            basket: '#8bb8cc',
+            basketStroke: 'rgba(45, 85, 110, 0.32)',
+            rope: 'rgba(55, 95, 120, 0.4)',
         },
         {
             kind: 'cool',
-            stops: { a: '#148f77', b: '#eafaf1', c: '#0b5345' },
-            stripe: 'rgba(255,255,255,0.52)',
-            bask: '#4a6741',
-            baskEdge: 'rgba(15,40,25,0.32)',
-            burnerMid: '#82e0aa',
-            burnerEnd: '#117864',
+            stops: { a: '#b8e0d4', b: '#f4fffb', c: '#7dbea8' },
+            basket: '#8fc4ae',
+            basketStroke: 'rgba(40, 95, 75, 0.3)',
+            rope: 'rgba(50, 105, 85, 0.38)',
         },
         {
             kind: 'warm',
-            stops: { a: '#e67e22', b: '#fdebd0', c: '#935116' },
-            stripe: 'rgba(255,255,255,0.5)',
-            bask: '#6e4c35',
-            baskEdge: 'rgba(40,25,10,0.34)',
-            burnerMid: '#fad7a0',
-            burnerEnd: '#ca6f1e',
+            stops: { a: '#ffd4a8', b: '#fffaf5', c: '#f0a878' },
+            basket: '#e8b896',
+            basketStroke: 'rgba(140, 90, 55, 0.3)',
+            rope: 'rgba(130, 85, 55, 0.4)',
         },
         {
             kind: 'warm',
-            stops: { a: '#c2185b', b: '#fadbd8', c: '#641e16' },
-            stripe: 'rgba(255,255,255,0.48)',
-            bask: '#633030',
-            baskEdge: 'rgba(40,10,20,0.36)',
-            burnerMid: '#f8bbd9',
-            burnerEnd: '#880e4f',
+            stops: { a: '#ffeaa9', b: '#fffef8', c: '#f0c85c' },
+            basket: '#e8d090',
+            basketStroke: 'rgba(130, 110, 45, 0.28)',
+            rope: 'rgba(120, 100, 50, 0.38)',
         },
         {
             kind: 'cool',
-            stops: { a: '#5c6bc0', b: '#e8eaf6', c: '#1a237e' },
-            stripe: 'rgba(255,255,255,0.48)',
-            bask: '#455a64',
-            baskEdge: 'rgba(20,25,45,0.35)',
-            burnerMid: '#c5cae9',
-            burnerEnd: '#3949ab',
+            stops: { a: '#c5cae9', b: '#fafbff', c: '#8e99d8' },
+            basket: '#a8aed4',
+            basketStroke: 'rgba(55, 65, 130, 0.28)',
+            rope: 'rgba(65, 75, 125, 0.38)',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#f8c8dc', b: '#fff8fb', c: '#e598b8' },
+            basket: '#daa8c4',
+            basketStroke: 'rgba(130, 75, 105, 0.3)',
+            rope: 'rgba(125, 80, 100, 0.38)',
         },
         {
             kind: 'cool',
-            stops: { a: '#0097a7', b: '#e0f7fa', c: '#004d40' },
-            stripe: 'rgba(255,255,255,0.52)',
-            bask: '#3d6b5c',
-            baskEdge: 'rgba(0,45,40,0.32)',
-            burnerMid: '#80deea',
-            burnerEnd: '#00838f',
+            stops: { a: '#abe9cd', b: '#f7fffc', c: '#6dd4a3' },
+            basket: '#8fd4b0',
+            basketStroke: 'rgba(35, 110, 75, 0.28)',
+            rope: 'rgba(45, 115, 80, 0.38)',
         },
         {
             kind: 'warm',
-            stops: { a: '#f39c12', b: '#fef9e7', c: '#b7950b' },
-            stripe: 'rgba(255,255,255,0.55)',
-            bask: '#7d6608',
-            baskEdge: 'rgba(80,55,0,0.35)',
-            burnerMid: '#fde68a',
-            burnerEnd: '#d68910',
-        },
-        {
-            kind: 'warm',
-            stops: { a: '#922b21', b: '#fadbd8', c: '#512e2f' },
-            stripe: 'rgba(255,255,255,0.45)',
-            bask: '#5d4037',
-            baskEdge: 'rgba(35,15,12,0.38)',
-            burnerMid: '#ec7063',
-            burnerEnd: '#78281f',
+            stops: { a: '#fbc4a8', b: '#fff9f5', c: '#e8956f' },
+            basket: '#dcb098',
+            basketStroke: 'rgba(140, 75, 50, 0.3)',
+            rope: 'rgba(130, 80, 55, 0.4)',
         },
         {
             kind: 'cool',
-            stops: { a: '#2471a3', b: '#eaf2f8', c: '#1b2631' },
-            stripe: 'rgba(255,255,255,0.47)',
-            bask: '#37474f',
-            baskEdge: 'rgba(15,25,35,0.36)',
-            burnerMid: '#aed6f1',
-            burnerEnd: '#1f618d',
+            stops: { a: '#d7bde2', b: '#faf5fc', c: '#af7ebd' },
+            basket: '#c4a8d4',
+            basketStroke: 'rgba(90, 55, 115, 0.32)',
+            rope: 'rgba(95, 65, 120, 0.4)',
         },
         {
             kind: 'warm',
-            stops: { a: '#27ae60', b: '#eafaf1', c: '#145a32' },
-            stripe: 'rgba(255,255,255,0.5)',
-            bask: '#4e6e50',
-            baskEdge: 'rgba(15,45,25,0.32)',
-            burnerMid: '#abebc6',
-            burnerEnd: '#1e8449',
+            stops: { a: '#fad7e4', b: '#fffafd', c: '#eea9bc' },
+            basket: '#e8bdd0',
+            basketStroke: 'rgba(150, 85, 110, 0.28)',
+            rope: 'rgba(140, 85, 105, 0.38)',
         },
     ];
 
-    /**
-     * Daha gerçekçi silüet, gölge, panel şeritleri, eğri halatlar, sepet lataları
-     */
-    function envelopeSvg(uid, pal) {
-        var stops = pal.stops;
-        var stripe = pal.stripe;
-        var bask = pal.bask;
-        var baskEdge = pal.baskEdge;
-
-        var envPath =
-            'M28 2.2 C11 2.2 1.8 15.5 1.8 28.5 C1.8 41.5 11.5 53.2 28 56.5 C44.5 53.2 54.2 41.5 54.2 28.5 C54.2 15.5 45 2.2 28 2.2 Z';
-
+    /** Küçük, düz ve yumuşak balon — ince şeritler, üç ip, minik sepet */
+    function minimalBalloonSvg(uid, pal) {
+        var s = pal.stops;
         return (
-            '<svg class="balloon-svg" viewBox="0 0 56 78" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+            '<svg class="balloon-svg balloon-svg--minimal" viewBox="0 0 40 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
             '<defs>' +
-            '<linearGradient id="env' +
+            '<linearGradient id="g' +
             uid +
-            '" x1="8%" y1="0%" x2="95%" y2="100%">' +
+            '" x1="18%" y1="5%" x2="88%" y2="95%">' +
             '<stop offset="0%" stop-color="' +
-            stops.a +
+            s.a +
             '"/>' +
-            '<stop offset="38%" stop-color="' +
-            stops.b +
-            '"/>' +
-            '<stop offset="100%" stop-color="' +
-            stops.c +
-            '"/>' +
-            '</linearGradient>' +
-            '<radialGradient id="hi' +
-            uid +
-            '" cx="28%" cy="18%" r="52%">' +
-            '<stop offset="0%" stop-color="#fff" stop-opacity="0.58"/>' +
-            '<stop offset="40%" stop-color="#fff" stop-opacity="0.12"/>' +
-            '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>' +
-            '</radialGradient>' +
-            '<radialGradient id="rim' +
-            uid +
-            '" cx="75%" cy="30%" r="35%">' +
-            '<stop offset="0%" stop-color="#fff" stop-opacity="0.35"/>' +
-            '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>' +
-            '</radialGradient>' +
-            '<linearGradient id="sh' +
-            uid +
-            '" x1="50%" y1="0%" x2="50%" y2="100%">' +
-            '<stop offset="0%" stop-color="rgba(0,0,0,0)"/>' +
-            '<stop offset="100%" stop-color="rgba(0,0,0,0.18)"/>' +
-            '</linearGradient>' +
-            '<radialGradient id="br' +
-            uid +
-            '" cx="50%" cy="35%" r="65%">' +
-            '<stop offset="0%" stop-color="#fffef2"/>' +
-            '<stop offset="30%" stop-color="' +
-            pal.burnerMid +
+            '<stop offset="52%" stop-color="' +
+            s.b +
             '"/>' +
             '<stop offset="100%" stop-color="' +
-            pal.burnerEnd +
-            '" stop-opacity="0"/>' +
-            '</radialGradient>' +
-            '<pattern id="wv' +
-            uid +
-            '" width="2.2" height="2.2" patternUnits="userSpaceOnUse">' +
-            '<path d="M0 2.2 L2.2 0 M0 0 L2.2 2.2" stroke="rgba(0,0,0,0.2)" stroke-width="0.22"/>' +
-            '</pattern>' +
-            '<clipPath id="cp' +
-            uid +
-            '">' +
-            '<path d="' +
-            envPath +
+            s.c +
             '"/>' +
-            '</clipPath>' +
+            '</linearGradient>' +
+            '<radialGradient id="hl' +
+            uid +
+            '" cx="30%" cy="22%" r="58%">' +
+            '<stop offset="0%" stop-color="#fff" stop-opacity="0.42"/>' +
+            '<stop offset="65%" stop-color="#fff" stop-opacity="0.06"/>' +
+            '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>' +
+            '</radialGradient>' +
             '</defs>' +
-            '<ellipse cx="28" cy="71.5" rx="14" ry="2.2" fill="rgba(0,0,0,0.07)"/>' +
-            '<g clip-path="url(#cp' +
-            uid +
-            ')">' +
-            '<path d="' +
-            envPath +
-            '" fill="url(#env' +
-            uid +
-            ')" stroke="rgba(0,0,0,0.14)" stroke-width="0.5"/>' +
-            '<path d="' +
-            envPath +
-            '" fill="url(#hi' +
+            '<path d="M20 2.8 C9 2.8 2.2 13 2.2 23 C2.2 33 9.2 41 20 43 C30.8 41 37.8 33 37.8 23 C37.8 13 31 2.8 20 2.8 Z" fill="url(#g' +
             uid +
             ')"/>' +
-            '<path d="' +
-            envPath +
-            '" fill="url(#rim' +
+            '<path d="M20 2.8 C9 2.8 2.2 13 2.2 23 C2.2 33 9.2 41 20 43 C30.8 41 37.8 33 37.8 23 C37.8 13 31 2.8 20 2.8 Z" fill="url(#hl' +
             uid +
             ')"/>' +
-            '<ellipse cx="28" cy="48" rx="22" ry="14" fill="url(#sh' +
-            uid +
-            ')"/>' +
-            '<g stroke="' +
-            stripe +
-            '" stroke-width="0.85" fill="none" opacity="0.42">' +
-            '<path d="M11 6 Q9 28 12 52"/>' +
-            '<path d="M17 4 Q15 28 17 54"/>' +
-            '<path d="M23 3 Q22 28 23 55"/>' +
-            '<path d="M28 2.5 Q27 28 28 56"/>' +
-            '<path d="M33 3 Q34 28 33 55"/>' +
-            '<path d="M39 4 Q41 28 39 54"/>' +
-            '<path d="M45 6 Q47 28 44 52"/>' +
+            '<path d="M20 2.8 C9 2.8 2.2 13 2.2 23 C2.2 33 9.2 41 20 43 C30.8 41 37.8 33 37.8 23 C37.8 13 31 2.8 20 2.8 Z" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.55"/>' +
+            '<g stroke="rgba(255,255,255,0.35)" stroke-width="0.65" stroke-linecap="round">' +
+            '<line x1="11" y1="9" x2="11" y2="36"/>' +
+            '<line x1="15.5" y1="7" x2="15.5" y2="38"/>' +
+            '<line x1="20" y1="6.5" x2="20" y2="39"/>' +
+            '<line x1="24.5" y1="7" x2="24.5" y2="38"/>' +
+            '<line x1="29" y1="9" x2="29" y2="36"/>' +
             '</g>' +
-            '</g>' +
-            '<path d="M18.5 53 Q19 58 20.5 62.5" stroke="rgba(42,30,18,0.62)" stroke-width="0.85" fill="none" stroke-linecap="round"/>' +
-            '<path d="M28 54 Q28 58 28 63.2" stroke="rgba(42,30,18,0.62)" stroke-width="0.85" fill="none" stroke-linecap="round"/>' +
-            '<path d="M37.5 53 Q36 58 35.5 62.5" stroke="rgba(42,30,18,0.62)" stroke-width="0.85" fill="none" stroke-linecap="round"/>' +
-            '<ellipse cx="28" cy="60.5" rx="5" ry="3.2" fill="url(#br' +
-            uid +
-            ')" class="balloon-burner-glow"/>' +
-            '<rect x="17" y="62.8" width="22" height="6" rx="1.4" fill="' +
-            bask +
+            '<line x1="14" y1="41" x2="16" y2="46.4" stroke="' +
+            pal.rope +
+            '" stroke-width="0.7" stroke-linecap="round"/>' +
+            '<line x1="20" y1="42.5" x2="20" y2="46.6" stroke="' +
+            pal.rope +
+            '" stroke-width="0.7" stroke-linecap="round"/>' +
+            '<line x1="26" y1="41" x2="24" y2="46.4" stroke="' +
+            pal.rope +
+            '" stroke-width="0.7" stroke-linecap="round"/>' +
+            '<rect x="14.2" y="46.4" width="11.6" height="4.2" rx="1.3" fill="' +
+            pal.basket +
             '" stroke="' +
-            baskEdge +
-            '" stroke-width="0.5"/>' +
-            '<rect x="17" y="62.8" width="22" height="6" rx="1.4" fill="url(#wv' +
-            uid +
-            ')" opacity="0.45"/>' +
-            '<line x1="21" y1="63.5" x2="21" y2="67.8" stroke="rgba(0,0,0,0.18)" stroke-width="0.35"/>' +
-            '<line x1="28" y1="63.5" x2="28" y2="67.8" stroke="rgba(0,0,0,0.18)" stroke-width="0.35"/>' +
-            '<line x1="35" y1="63.5" x2="35" y2="67.8" stroke="rgba(0,0,0,0.18)" stroke-width="0.35"/>' +
-            '<rect x="17.8" y="62.5" width="20.4" height="1.1" rx="0.35" fill="rgba(255,255,255,0.15)"/>' +
-            '<rect x="17.8" y="67.2" width="20.4" height="0.55" rx="0.15" fill="rgba(0,0,0,0.15)"/>' +
+            pal.basketStroke +
+            '" stroke-width="0.4"/>' +
             '</svg>'
         );
     }
 
     var w = window.innerWidth;
-    var count = w < 480 ? 9 : w < 900 ? 12 : 16;
-    /** Küçük ölçek + küçük taban boyut çarpılınca SVG tek renk leke + kutu gibi görünüyor */
-    var sizeBoost = w < 480 ? 1 : w < 900 ? 1.12 : 1.22;
+    var count = w < 480 ? 10 : w < 900 ? 14 : 18;
+    var sizeBoost = w < 480 ? 1 : w < 900 ? 1.08 : 1.15;
+
+    var MAX_W = w < 480 ? 72 : 82;
+    var MAX_H = w < 480 ? 90 : 100;
 
     for (var i = 0; i < count; i++) {
         var left = 3 + Math.random() * 94;
-        var dur = 40 + Math.random() * 55;
+        var dur = 38 + Math.random() * 52;
         var delay = -Math.random() * dur;
-        var scale = 0.52 + Math.random() * 0.34;
+        var scale = 0.48 + Math.random() * 0.36;
         var driftPx = -40 + Math.random() * 80;
         var drift = driftPx + 'px';
-        var pal = BALLOON_PALETTES[Math.floor(Math.random() * BALLOON_PALETTES.length)];
-        var hueNudge = ((Math.random() * 14 - 7) | 0) + 'deg';
-        var envW = Math.round((48 + Math.random() * 34) * sizeBoost);
-        var envH = Math.round((58 + Math.random() * 38) * sizeBoost);
-        var opacityMid = (0.4 + Math.random() * 0.22).toFixed(3);
-        var uid = 'u' + i + '_' + ((Math.random() * 1e6) | 0);
+        var pal = SWEET_PALETTES[Math.floor(Math.random() * SWEET_PALETTES.length)];
+        var rawW = Math.round((44 + Math.random() * 28) * sizeBoost);
+        var rawH = Math.round((54 + Math.random() * 32) * sizeBoost);
+        var envW = Math.min(MAX_W, Math.max(42, rawW));
+        var envH = Math.min(MAX_H, Math.max(52, rawH));
+        var opacityMid = (0.42 + Math.random() * 0.18).toFixed(3);
+        var uid = 'm' + i + '_' + ((Math.random() * 1e6) | 0);
 
         var unit = document.createElement('div');
-        unit.className = 'balloon-unit';
+        unit.className = 'balloon-unit balloon-unit--minimal';
         unit.style.setProperty('--left', left + '%');
-        unit.style.setProperty('--hue', hueNudge);
+        unit.style.setProperty('--hue', '0deg');
 
         var inner = document.createElement('div');
         inner.className = 'balloon-inner';
@@ -298,7 +208,7 @@
             (pal.kind === 'cool' ? ' balloon-envelope--sky' : ' balloon-envelope--warm');
         env.style.setProperty('--env-w', envW + 'px');
         env.style.setProperty('--env-h', envH + 'px');
-        env.innerHTML = envelopeSvg(uid, pal);
+        env.innerHTML = minimalBalloonSvg(uid, pal);
 
         inner.appendChild(env);
         unit.appendChild(inner);
