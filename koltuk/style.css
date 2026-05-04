@@ -40,7 +40,7 @@ body {
     left: var(--left);
     bottom: -12vh;
     transform: translateX(-50%);
-    filter: hue-rotate(var(--hue)) saturate(1.05);
+    filter: hue-rotate(var(--hue, 0deg)) saturate(1.06);
 }
 
 .balloon-inner {

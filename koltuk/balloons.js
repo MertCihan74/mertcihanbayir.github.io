@@ -20,16 +20,126 @@
         return;
     }
 
+    /** Kapadokya tarzı çeşitli gövde renkleri (gradient + sepet + brülör uyumu) */
+    var BALLOON_PALETTES = [
+        {
+            kind: 'warm',
+            stops: { a: '#b03a2e', b: '#f9e79f', c: '#4a1c1a' },
+            stripe: 'rgba(255,255,255,0.48)',
+            bask: '#5d4035',
+            baskEdge: 'rgba(25,15,8,0.35)',
+            burnerMid: '#f7c948',
+            burnerEnd: '#c0392b',
+        },
+        {
+            kind: 'cool',
+            stops: { a: '#1f6dad', b: '#d4e6f1', c: '#0a2c4a' },
+            stripe: 'rgba(255,255,255,0.5)',
+            bask: '#3d5a4a',
+            baskEdge: 'rgba(0,0,0,0.28)',
+            burnerMid: '#85c1e9',
+            burnerEnd: '#154360',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#7d3c98', b: '#f5eef8', c: '#4a235a' },
+            stripe: 'rgba(255,255,255,0.46)',
+            bask: '#5d4e6b',
+            baskEdge: 'rgba(30,15,35,0.38)',
+            burnerMid: '#e8daef',
+            burnerEnd: '#6c3483',
+        },
+        {
+            kind: 'cool',
+            stops: { a: '#148f77', b: '#eafaf1', c: '#0b5345' },
+            stripe: 'rgba(255,255,255,0.52)',
+            bask: '#4a6741',
+            baskEdge: 'rgba(15,40,25,0.32)',
+            burnerMid: '#82e0aa',
+            burnerEnd: '#117864',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#e67e22', b: '#fdebd0', c: '#935116' },
+            stripe: 'rgba(255,255,255,0.5)',
+            bask: '#6e4c35',
+            baskEdge: 'rgba(40,25,10,0.34)',
+            burnerMid: '#fad7a0',
+            burnerEnd: '#ca6f1e',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#c2185b', b: '#fadbd8', c: '#641e16' },
+            stripe: 'rgba(255,255,255,0.48)',
+            bask: '#633030',
+            baskEdge: 'rgba(40,10,20,0.36)',
+            burnerMid: '#f8bbd9',
+            burnerEnd: '#880e4f',
+        },
+        {
+            kind: 'cool',
+            stops: { a: '#5c6bc0', b: '#e8eaf6', c: '#1a237e' },
+            stripe: 'rgba(255,255,255,0.48)',
+            bask: '#455a64',
+            baskEdge: 'rgba(20,25,45,0.35)',
+            burnerMid: '#c5cae9',
+            burnerEnd: '#3949ab',
+        },
+        {
+            kind: 'cool',
+            stops: { a: '#0097a7', b: '#e0f7fa', c: '#004d40' },
+            stripe: 'rgba(255,255,255,0.52)',
+            bask: '#3d6b5c',
+            baskEdge: 'rgba(0,45,40,0.32)',
+            burnerMid: '#80deea',
+            burnerEnd: '#00838f',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#f39c12', b: '#fef9e7', c: '#b7950b' },
+            stripe: 'rgba(255,255,255,0.55)',
+            bask: '#7d6608',
+            baskEdge: 'rgba(80,55,0,0.35)',
+            burnerMid: '#fde68a',
+            burnerEnd: '#d68910',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#922b21', b: '#fadbd8', c: '#512e2f' },
+            stripe: 'rgba(255,255,255,0.45)',
+            bask: '#5d4037',
+            baskEdge: 'rgba(35,15,12,0.38)',
+            burnerMid: '#ec7063',
+            burnerEnd: '#78281f',
+        },
+        {
+            kind: 'cool',
+            stops: { a: '#2471a3', b: '#eaf2f8', c: '#1b2631' },
+            stripe: 'rgba(255,255,255,0.47)',
+            bask: '#37474f',
+            baskEdge: 'rgba(15,25,35,0.36)',
+            burnerMid: '#aed6f1',
+            burnerEnd: '#1f618d',
+        },
+        {
+            kind: 'warm',
+            stops: { a: '#27ae60', b: '#eafaf1', c: '#145a32' },
+            stripe: 'rgba(255,255,255,0.5)',
+            bask: '#4e6e50',
+            baskEdge: 'rgba(15,45,25,0.32)',
+            burnerMid: '#abebc6',
+            burnerEnd: '#1e8449',
+        },
+    ];
+
     /**
      * Daha gerçekçi silüet, gölge, panel şeritleri, eğri halatlar, sepet lataları
      */
-    function envelopeSvg(uid, isSky) {
-        var stops = isSky
-            ? { a: '#1f6dad', b: '#d4e6f1', c: '#0a2c4a' }
-            : { a: '#b03a2e', b: '#f9e79f', c: '#4a1c1a' };
-        var stripe = isSky ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.48)';
-        var bask = isSky ? '#3d5a4a' : '#5d4035';
-        var baskEdge = isSky ? 'rgba(0,0,0,0.28)' : 'rgba(25,15,8,0.35)';
+    function envelopeSvg(uid, pal) {
+        var stops = pal.stops;
+        var stripe = pal.stripe;
+        var bask = pal.bask;
+        var baskEdge = pal.baskEdge;
 
         var envPath =
             'M28 2.2 C11 2.2 1.8 15.5 1.8 28.5 C1.8 41.5 11.5 53.2 28 56.5 C44.5 53.2 54.2 41.5 54.2 28.5 C54.2 15.5 45 2.2 28 2.2 Z';
@@ -73,8 +183,12 @@
             uid +
             '" cx="50%" cy="35%" r="65%">' +
             '<stop offset="0%" stop-color="#fffef2"/>' +
-            '<stop offset="30%" stop-color="#f7c948"/>' +
-            '<stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>' +
+            '<stop offset="30%" stop-color="' +
+            pal.burnerMid +
+            '"/>' +
+            '<stop offset="100%" stop-color="' +
+            pal.burnerEnd +
+            '" stop-opacity="0"/>' +
             '</radialGradient>' +
             '<pattern id="wv' +
             uid +
@@ -148,8 +262,6 @@
 
     var w = window.innerWidth;
     var count = w < 480 ? 9 : w < 900 ? 12 : 16;
-    var huesWarm = ['-8deg', '0deg', '14deg', '24deg', '38deg', '318deg', '335deg'];
-    var huesSky = ['-4deg', '0deg', '6deg', '12deg', '198deg', '205deg'];
 
     for (var i = 0; i < count; i++) {
         var left = 3 + Math.random() * 94;
@@ -158,9 +270,8 @@
         var scale = 0.26 + Math.random() * 0.4;
         var driftPx = -40 + Math.random() * 80;
         var drift = driftPx + 'px';
-        var isSky = Math.random() > 0.45;
-        var hueList = isSky ? huesSky : huesWarm;
-        var hue = hueList[Math.floor(Math.random() * hueList.length)];
+        var pal = BALLOON_PALETTES[Math.floor(Math.random() * BALLOON_PALETTES.length)];
+        var hueNudge = ((Math.random() * 14 - 7) | 0) + 'deg';
         var envW = 24 + Math.random() * 14;
         var envH = 30 + Math.random() * 14;
         var opacityMid = (0.4 + Math.random() * 0.22).toFixed(3);
@@ -169,7 +280,7 @@
         var unit = document.createElement('div');
         unit.className = 'balloon-unit';
         unit.style.setProperty('--left', left + '%');
-        unit.style.setProperty('--hue', hue);
+        unit.style.setProperty('--hue', hueNudge);
 
         var inner = document.createElement('div');
         inner.className = 'balloon-inner';
@@ -182,10 +293,10 @@
         var env = document.createElement('div');
         env.className =
             'balloon-envelope balloon-envelope--svg' +
-            (isSky ? ' balloon-envelope--sky' : ' balloon-envelope--warm');
+            (pal.kind === 'cool' ? ' balloon-envelope--sky' : ' balloon-envelope--warm');
         env.style.setProperty('--env-w', envW + 'px');
         env.style.setProperty('--env-h', envH + 'px');
-        env.innerHTML = envelopeSvg(uid, isSky);
+        env.innerHTML = envelopeSvg(uid, pal);
 
         inner.appendChild(env);
         unit.appendChild(inner);
