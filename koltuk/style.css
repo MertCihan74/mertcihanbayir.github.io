@@ -11,7 +11,8 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Üstten hizalamak için */
+    padding: 10vh 20px; /* Üstten ve alttan %10 boşluk bırakır, tam "üst ile orta arası" hissi verir */
     min-height: 100vh;
     overflow-x: hidden;
 }
@@ -26,7 +27,6 @@ body {
     text-align: center;
     position: relative;
     z-index: 1;
-    margin-top: -5vh; /* Ortadan biraz daha yukarıda durması için */
 }
 
 h1 {
