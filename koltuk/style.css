@@ -7,6 +7,8 @@
 :root {
     /* balloons.js yüklenene kadar yedek; animasyonda vh kullanılmıyor */
     --balloon-rise-px: 1100px;
+    /* Üst ile ekran ortası arasındaki bölgenin hizası (~%25): kart biraz aşağıda */
+    --page-top-space: clamp(16vh, 22vh, 32vh);
 }
 
 body {
@@ -16,7 +18,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Üstten hizalamak için */
-    padding: 10vh max(16px, env(safe-area-inset-right)) 10vh max(16px, env(safe-area-inset-left));
+    padding: var(--page-top-space) max(16px, env(safe-area-inset-right)) min(8vh, 5rem)
+        max(16px, env(safe-area-inset-left));
     min-height: 100vh;
     min-height: 100dvh;
     overflow-x: clip;
@@ -473,7 +476,7 @@ h1 {
         max-height: 100dvh;
         overflow: hidden;
         overscroll-behavior: none;
-        padding: max(6px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+        padding: max(env(safe-area-inset-top), min(5vh, 40px)) max(10px, env(safe-area-inset-right))
             max(6px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
     }
 
@@ -482,7 +485,9 @@ h1 {
         margin-right: auto;
         flex: 1 1 auto;
         min-height: 0;
-        max-height: min(100dvh - 12px, 100%);
+        max-height: calc(
+            100dvh - max(env(safe-area-inset-top), min(5vh, 40px)) - max(6px, env(safe-area-inset-bottom)) - 16px
+        );
         display: flex;
         flex-direction: column;
         padding: 10px 8px 8px;
