@@ -353,6 +353,27 @@ h1 {
 
 
 /* SweetAlert customization */
+.swal2-popup {
+    font-family: 'Outfit', sans-serif !important;
+    border-radius: 20px !important;
+    padding: 1.5rem !important;
+}
+
+@media (max-width: 600px) {
+    .swal2-popup {
+        width: 90% !important;
+        padding: 1rem !important;
+        font-size: 0.85rem !important;
+    }
+    .swal2-title {
+        font-size: 1.3rem !important;
+    }
+    .swal2-input {
+        font-size: 0.9rem !important;
+        height: 2.5rem !important;
+    }
+}
+
 .swal2-radio-container {
     display: flex;
     justify-content: center;
