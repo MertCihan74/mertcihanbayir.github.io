@@ -32,16 +32,7 @@ async function fetchAllowedUsers() {
                 }
             }
         }
-        // Aynı e-posta sheet'te iki kez yazılmışsa yalnızca ilk satır kullanılır (çakışma önleme)
-        const byEmail = new Map();
-        for (const u of users) {
-            if (!byEmail.has(u.email)) {
-                byEmail.set(u.email, u);
-            } else {
-                console.warn('[koltuk] Yinelenen e-posta sheet\'te atlandı:', u.email, u.name);
-            }
-        }
-        return Array.from(byEmail.values());
+        return users;
     } catch (e) {
         console.error("CSV fetch error:", e);
         return null;
@@ -264,42 +255,19 @@ async function handleSeatClick(seatNum, seatEl) {
                     return false;
                 }
 
-                // Bu e-posta ile başka koltukta rezervasyon veya aktif işlem var mı?
+                // Bu e-posta ile daha önce koltuk alınmış mı kontrol et
                 try {
                     const snapshot = await db.collection('seats')
                         .where('email', '==', normInputEmail)
                         .get();
-
-                    const nowMs = Date.now();
-                    const blocking = snapshot.docs.find((d) => {
-                        if (d.id === seatNum.toString()) return false;
-                        const row = d.data();
-                        if (row.status === 'taken') return true;
-                        if (row.status === 'pending') {
-                            const t = row.timestamp && row.timestamp.toDate
-                                ? row.timestamp.toDate()
-                                : null;
-                            if (!t) return true;
-                            return nowMs - t.getTime() < 2 * 60 * 1000;
-                        }
-                        return false;
-                    });
-
-                    if (blocking) {
-                        if (blocking.data().status === 'taken') {
-                            return {
-                                name: userMatch.name,
-                                email: normInputEmail,
-                                changeFrom: blocking.id,
-                            };
-                        }
-                        Swal.showValidationMessage(
-                            'Bu e-posta ile şu an başka bir koltukta işlem sürüyor veya yakın zamanda denendi. Bir süre bekleyin veya önce o koltuktaki işlemi tamamlayın.'
-                        );
-                        return false;
+                        
+                    const takenDoc = snapshot.docs.find(d => d.data().status === 'taken');
+                    if (takenDoc) {
+                        // Zaten bir koltuğu var, değişim işlemi için bilgiyi döndür
+                        return { name: userMatch.name, email: normInputEmail, changeFrom: takenDoc.id };
                     }
-                } catch (e) {
-                    console.error('Firebase email check error', e);
+                } catch(e) {
+                    console.error("Firebase email check error", e);
                 }
                 
                 // Başarılı ise, tablodaki orijinal adını kullanalım
