@@ -42,10 +42,6 @@ body {
     transform: translateX(-50%);
 }
 
-.balloon-unit--minimal {
-    filter: saturate(1.07);
-}
-
 .balloon-inner {
     display: flex;
     flex-direction: column;
@@ -60,15 +56,15 @@ body {
     height: var(--env-h, 36px);
 }
 
-/* Minimal tatlı balon SVG (balloons.js) */
+/* Parti balonu SVG: sepet yok, drop-shadow yok (net vektör) */
 .balloon-envelope--svg {
     background: none;
     border-radius: 0;
     box-shadow: none;
-    min-width: 42px;
-    min-height: 52px;
-    max-width: 88px;
-    max-height: 110px;
+    min-width: 38px;
+    min-height: 50px;
+    max-width: 86px;
+    max-height: 115px;
 }
 
 .balloon-envelope--svg::before,
@@ -81,12 +77,11 @@ body {
     height: 100%;
     display: block;
     overflow: visible;
-    shape-rendering: geometricPrecision;
-    filter: drop-shadow(0 3px 5px rgba(40, 32, 55, 0.12));
+    shape-rendering: auto;
 }
 
-.balloon-envelope--svg .balloon-svg--minimal {
-    filter: drop-shadow(0 2px 4px rgba(50, 40, 70, 0.1));
+.balloon-envelope--svg .balloon-svg--party {
+    filter: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
