@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Koltuk Seçimi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,12 +22,14 @@
             <div class="legend-item"><div class="seat-legend pending"></div> İşlemde</div>
         </div>
 
-        <div class="bus-container">
-            <div class="steering-wheel">
-                <i class="fas fa-steering-wheel"></i> Şoför
-            </div>
-            <div class="bus-layout" id="bus-layout">
-                <!-- JS ile doldurulacak -->
+        <div class="bus-scroll" role="region" aria-label="Otobüs koltuk planı">
+            <div class="bus-container">
+                <div class="steering-wheel">
+                    <i class="fas fa-steering-wheel"></i> Şoför
+                </div>
+                <div class="bus-layout" id="bus-layout">
+                    <!-- JS ile doldurulacak -->
+                </div>
             </div>
         </div>
     </div>

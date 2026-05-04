@@ -8,13 +8,13 @@ body {
     font-family: 'Outfit', sans-serif;
     background-color: #f4f7f6;
     color: #333;
-    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Üstten hizalamak için */
-    padding: 10vh 20px; /* Üstten ve alttan %10 boşluk bırakır, tam "üst ile orta arası" hissi verir */
+    padding: 10vh max(16px, env(safe-area-inset-right)) 10vh max(16px, env(safe-area-inset-left));
     min-height: 100vh;
-    overflow-x: hidden;
+    min-height: 100dvh;
+    overflow-x: clip;
 }
 
 .main-container {
@@ -66,6 +66,23 @@ h1 {
 .seat-legend.male { background: #3498db; border-color: #2980b9; }
 .seat-legend.female { background: #e74c3c; border-color: #c0392b; }
 .seat-legend.pending { background: #f1c40f; border-color: #f39c12; }
+
+/* Dar ekranda otobüs genişliği viewport’u aşabildiği için yatay kaydırma */
+.bus-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+}
+
+.bus-scroll:focus-visible {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
 
 .bus-container {
     background: #ecf0f1;
@@ -339,6 +356,15 @@ h1 {
 }
 
 @media (max-width: 480px) {
+    body {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+    }
+
+    .main-container {
+        padding: 16px 8px;
+    }
+
     .seat { 
         width: 18px; 
         height: 18px; 
