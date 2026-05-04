@@ -196,14 +196,14 @@ h1 {
 .seat.taken::after {
     content: attr(data-name);
     position: absolute;
-    bottom: 110%;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0,0,0,0.8);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
@@ -214,6 +214,104 @@ h1 {
 .seat.taken:hover::after {
     opacity: 1;
 }
+
+/* --- Responsive Scaling for Mobile --- */
+@media (max-width: 950px) {
+    .main-container {
+        padding: 15px 10px;
+    }
+
+    .bus-container {
+        padding: 15px 20px 15px 50px;
+        border-width: 3px;
+        border-radius: 40px 10px 10px 40px;
+    }
+
+    .seat {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+        border-radius: 4px;
+    }
+
+    .bus-layout {
+        gap: 6px;
+    }
+
+    .bus-column {
+        gap: 4px;
+    }
+
+    .corridor {
+        height: 20px;
+    }
+
+    .middle-door {
+        width: 30px;
+        height: 64px; /* 30 * 2 + 4 gap */
+        font-size: 0.5rem;
+    }
+
+    .steering-wheel {
+        left: 15px;
+        font-size: 0.7rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .legend {
+        gap: 10px;
+        margin-bottom: 20px;
+        font-size: 0.8rem;
+    }
+
+    .seat-legend {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .seat {
+        width: 20px;
+        height: 20px;
+        font-size: 0.55rem;
+    }
+    
+    .bus-container {
+        padding: 10px 10px 10px 35px;
+    }
+
+    .bus-layout {
+        gap: 3px;
+    }
+
+    .bus-column {
+        gap: 3px;
+    }
+
+    .corridor {
+        height: 12px;
+    }
+
+    .middle-door {
+        width: 20px;
+        height: 43px; /* 20 * 2 + 3 gap */
+        font-size: 0.4rem;
+    }
+
+    .steering-wheel {
+        left: 8px;
+        font-size: 0.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+    }
+}
+
 
 /* SweetAlert customization */
 .swal2-radio-container {
