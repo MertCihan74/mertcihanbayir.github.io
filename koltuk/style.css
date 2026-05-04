@@ -7,8 +7,8 @@
 :root {
     /* balloons.js yüklenene kadar yedek; animasyonda vh kullanılmıyor */
     --balloon-rise-px: 1100px;
-    /* Üst ile ekran ortası bandı — bir kat daha aşağı */
-    --page-top-space: clamp(28vh, 38vh, 52vh);
+    /* Sadece dar ekran: üst–orta bandı hizası (üst ile %50 arasının ~ortası) */
+    --mobile-page-top: clamp(16vh, 22vh, 30vh);
 }
 
 body {
@@ -17,9 +17,9 @@ body {
     color: #333;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Üstten hizalamak için */
-    padding: var(--page-top-space) max(16px, env(safe-area-inset-right)) min(8vh, 5rem)
-        max(16px, env(safe-area-inset-left));
+    align-items: center;
+    padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
     min-height: 100vh;
     min-height: 100dvh;
     overflow-x: clip;
@@ -74,7 +74,7 @@ body {
     height: 100%;
     display: block;
     overflow: visible;
-    filter: drop-shadow(0 3px 4px rgba(35, 25, 15, 0.22));
+    filter: drop-shadow(0 4px 6px rgba(25, 18, 12, 0.28)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
 }
 
 .balloon-burner-glow {
@@ -382,7 +382,7 @@ h1 {
     color: #e74c3c;
 }
 
-/* Telefon: sayfa dikeyde tek ekran; adres çubuğu overscroll balonları oynatmasın */
+/* Telefon: tek ekran; kart üst ile dikey ortanın arasında (~%22–25 vh) */
 @media (max-width: 640px) {
     html {
         height: 100%;
@@ -396,7 +396,7 @@ h1 {
         max-height: 100dvh;
         overflow: hidden;
         overscroll-behavior: none;
-        padding: max(env(safe-area-inset-top), min(9vh, 52px)) max(10px, env(safe-area-inset-right))
+        padding: max(env(safe-area-inset-top), var(--mobile-page-top)) max(10px, env(safe-area-inset-right))
             max(6px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
     }
 
@@ -406,7 +406,8 @@ h1 {
         flex: 1 1 auto;
         min-height: 0;
         max-height: calc(
-            100dvh - max(env(safe-area-inset-top), min(9vh, 52px)) - max(6px, env(safe-area-inset-bottom)) - 16px
+            100dvh - max(env(safe-area-inset-top), var(--mobile-page-top)) -
+                max(6px, env(safe-area-inset-bottom)) - 16px
         );
         display: flex;
         flex-direction: column;
