@@ -363,4 +363,25 @@ h1 {
     h1 {
         font-size: 1.4rem;
     }
+
+    /* SweetAlert Mobil Fixleri */
+    .swal2-popup {
+        width: 95% !important;
+        padding: 15px 10px !important;
+    }
+
+    .swal2-input {
+        width: 90% !important;
+        margin: 10px auto !important;
+        font-size: 16px !important; /* iOS zoom engellemek için minimum 16px */
+        height: 45px !important;
+    }
+
+    .swal2-title {
+        font-size: 1.3rem !important;
+    }
+
+    .swal2-content {
+        font-size: 0.9rem !important;
+    }
 }

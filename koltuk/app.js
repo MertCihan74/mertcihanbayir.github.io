@@ -223,6 +223,7 @@ async function handleSeatClick(seatNum, seatEl) {
             cancelButtonColor: '#e74c3c',
             allowOutsideClick: false, // İşlemdeyken dışarı tıklamayı engelle
             showLoaderOnConfirm: true, // Listeyi çekerken yükleniyor animasyonu göster
+            heightAuto: false, // Mobil klavye açıldığında sayfanın kaymasını engeller
             preConfirm: async () => {
                 const name = document.getElementById('swal-input-name').value.trim();
                 const email = document.getElementById('swal-input-email').value.trim().toLowerCase();
