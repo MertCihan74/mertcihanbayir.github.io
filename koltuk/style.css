@@ -15,6 +15,97 @@ body {
     min-height: 100vh;
     min-height: 100dvh;
     overflow-x: clip;
+    position: relative;
+}
+
+/* Kapadokya tarzı dekor balonlar — tıklamaları engellemez (pointer-events: none), içerik altta değil üstte */
+.balloon-sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.balloon-unit {
+    position: absolute;
+    left: var(--left);
+    bottom: -12vh;
+    transform: translateX(-50%);
+    filter: hue-rotate(var(--hue)) saturate(1.05);
+}
+
+.balloon-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: balloon-rise var(--dur) linear infinite;
+    animation-delay: var(--delay);
+    will-change: transform, opacity;
+}
+
+.balloon-envelope {
+    width: var(--env-w, 26px);
+    height: var(--env-h, 32px);
+    background:
+        repeating-linear-gradient(
+            92deg,
+            rgba(255, 255, 255, 0.16) 0 2px,
+            transparent 2px 5px
+        ),
+        linear-gradient(155deg, #c0392b 0%, #f39c12 42%, #e67e22 100%);
+    border-radius: 50% 50% 46% 46% / 58% 58% 40% 40%;
+    box-shadow:
+        inset -5px -8px 12px rgba(0, 0, 0, 0.14),
+        inset 4px 6px 10px rgba(255, 255, 255, 0.35);
+}
+
+.balloon-rig {
+    display: flex;
+    justify-content: center;
+    gap: calc(6px * var(--scale, 1));
+    height: 8px;
+    margin-top: -1px;
+}
+
+.balloon-rope {
+    width: 1px;
+    height: 100%;
+    background: rgba(55, 40, 25, 0.5);
+    border-radius: 1px;
+}
+
+.balloon-basket {
+    width: calc(13px * var(--scale, 1));
+    height: calc(8px * var(--scale, 1));
+    min-width: 8px;
+    background: linear-gradient(180deg, #7d5a3a 0%, #4a3728 100%);
+    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes balloon-rise {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(var(--scale)) rotate(-5deg);
+    }
+    7% {
+        opacity: var(--opacity-mid, 0.55);
+    }
+    93% {
+        opacity: var(--opacity-mid, 0.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--drift), -128vh, 0) scale(var(--scale)) rotate(7deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .balloon-sky {
+        display: none;
+    }
 }
 
 .main-container {
@@ -27,6 +118,7 @@ body {
     text-align: center;
     position: relative;
     z-index: 1;
+    isolation: isolate;
 }
 
 h1 {
