@@ -5,10 +5,13 @@ html, body {
     min-height: 100vh;
     font-family: 'Outfit', sans-serif;
     background: #f0f2f5;
+}
+
+body {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
+    justify-content: center;
+    align-items: flex-start; /* Üstten başlasın, uzun sayfalarda sorun olmasın */
+    padding: 20px 0;
 }
 
 .main-container {
