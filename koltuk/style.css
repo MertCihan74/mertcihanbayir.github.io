@@ -325,7 +325,12 @@ h1 {
 }
 
 
-/* SweetAlert customization */
+/* 3. Adım: Final Mobil Düzenlemeler ve Performans Ayarları */
+.bus-container {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
 .swal2-popup {
     font-family: 'Outfit', sans-serif !important;
     border-radius: 20px !important;
