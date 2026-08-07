@@ -6,11 +6,17 @@
   <title>Mert Cihan Bayır — AI Engineer</title>
   <meta name="description" content="Mert Cihan Bayır — AI Engineer & Software Engineer specializing in RAG, LLMs, Machine Learning, Deep Learning and Computer Vision." />
   <meta name="theme-color" content="#08090d" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" href="mcb.png">
+  <!-- Preload LCP hero image -->
+  <link rel="preload" as="image" href="mcb_pp.webp" type="image/webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Font Awesome loaded async (non-render-blocking) -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   <link rel="stylesheet" href="style.css">
   <!-- Apply saved theme before paint to avoid flash -->
   <script>
@@ -26,8 +32,8 @@
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#hero" class="nav-logo">
-        <img src="mcb.png" alt="MCB Logo" class="logo-image">
+      <a href="#hero" class="nav-logo mono" aria-label="Mert Cihan Bayır — home">
+        <span class="logo-accent">&gt;</span>mcb<span class="logo-caret">_</span>
       </a>
       <div class="nav-menu" id="navMenu">
         <a href="#hero" class="nav-link active" data-en="Home" data-tr="Ana Sayfa">Home</a>
@@ -99,7 +105,10 @@
           <span class="corner bl"></span>
           <span class="corner br"></span>
           <div class="detect-photo">
-            <img src="mcb_pp.png" alt="Mert Cihan Bayır" class="profile-image">
+            <picture>
+              <source srcset="mcb_pp.webp" type="image/webp">
+              <img src="mcb_pp.jpg" alt="Mert Cihan Bayır" class="profile-image" width="720" height="720" fetchpriority="high" decoding="async">
+            </picture>
           </div>
           <div class="scan-line" aria-hidden="true"></div>
         </div>
@@ -549,7 +558,9 @@
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
-        <img src="mcb.png" alt="MCB Logo" class="logo-image">
+        <a href="#hero" class="footer-logo mono" aria-label="Mert Cihan Bayır — home">
+          <span class="logo-accent">&gt;</span>mcb<span class="logo-caret">_</span>
+        </a>
         <p class="mono" data-en="Building intelligent systems." data-tr="Akıllı sistemler inşa ediyorum.">Building intelligent systems.</p>
       </div>
       <div class="footer-links">
@@ -573,6 +584,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

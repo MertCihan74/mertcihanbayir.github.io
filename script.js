@@ -268,20 +268,40 @@
           }
         }
       }
-      raf = requestAnimationFrame(step);
+      if (running) raf = requestAnimationFrame(step);
     }
 
-    let raf;
+    let raf = null, running = false;
+    function start() { if (!running) { running = true; raf = requestAnimationFrame(step); } }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
+    function canvasOnScreen() {
+      const r = canvas.getBoundingClientRect();
+      return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
+    }
+
     window.addEventListener('mousemove', e => {
       const r = canvas.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
       mouse.y = e.clientY - r.top;
     });
     window.addEventListener('mouseout', () => { mouse.x = -9999; mouse.y = -9999; });
-    window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); step(); });
+    window.addEventListener('resize', () => { resize(); }, { passive: true });
+
+    // Pause the loop when the hero canvas is off-screen or the tab is hidden (saves CPU/battery)
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach(e => e.isIntersecting ? start() : stop());
+      }, { threshold: 0 }).observe(canvas);
+    } else {
+      start();
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (canvasOnScreen()) start();
+    });
 
     resize();
-    step();
+    start();
   }
 
   /* ---------- Init ---------- */

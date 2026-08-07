@@ -128,12 +128,19 @@ img { max-width: 100%; display: block; }
   justify-content: space-between;
 }
 
-.nav-logo .logo-image {
-  height: 42px;
-  width: auto;
-  transition: transform 0.4s var(--ease);
+.nav-logo {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.3s var(--ease);
 }
-.nav-logo:hover .logo-image { transform: scale(1.06); }
+.nav-logo:hover { opacity: 0.82; }
+.logo-accent { color: var(--accent); margin-right: 0.08em; }
+.logo-caret { color: var(--accent); }
 
 .nav-menu { display: flex; gap: 2rem; }
 
@@ -1000,7 +1007,15 @@ img { max-width: 100%; display: block; }
   flex-wrap: wrap;
 }
 .footer-brand { display: flex; flex-direction: column; gap: 0.5rem; }
-.footer-brand .logo-image { height: 40px; width: auto; }
+.footer-logo {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  transition: opacity 0.3s var(--ease);
+}
+.footer-logo:hover { opacity: 0.82; }
 .footer-brand p { color: var(--text-mute); font-size: 0.8rem; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 1.2rem; }
 .footer-links a { color: var(--text-dim); font-size: 0.88rem; transition: color 0.3s var(--ease); }
