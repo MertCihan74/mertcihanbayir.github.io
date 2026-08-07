@@ -3,23 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mert Cihan Bayır - Software Engineer & AI Specialist</title>
-  <meta name="description" content="Mert Cihan Bayır - Software Engineer specializing in Artificial Intelligence, Machine Learning, and Mobile AI applications" />
+  <title>Mert Cihan Bayır — AI Engineer</title>
+  <meta name="description" content="Mert Cihan Bayır — AI Engineer & Software Engineer specializing in RAG, LLMs, Machine Learning, Deep Learning and Computer Vision." />
+  <meta name="theme-color" content="#08090d" />
   <link rel="icon" type="image/png" href="mcb.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <!-- Apply saved theme before paint to avoid flash -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar">
+  <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <div class="nav-logo">
+      <a href="#hero" class="nav-logo">
         <img src="mcb.png" alt="MCB Logo" class="logo-image">
-      </div>
-      <div class="nav-menu">
+      </a>
+      <div class="nav-menu" id="navMenu">
         <a href="#hero" class="nav-link active" data-en="Home" data-tr="Ana Sayfa">Home</a>
         <a href="#about" class="nav-link" data-en="About" data-tr="Hakkımda">About</a>
         <a href="#experience" class="nav-link" data-en="Experience" data-tr="Deneyim">Experience</a>
@@ -32,116 +42,145 @@
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="tr">TR</button>
         </div>
-        <button class="theme-toggle" id="themeToggle">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <i class="fas fa-moon"></i>
           <i class="fas fa-sun"></i>
         </button>
-        <div class="nav-toggle">
+        <button class="nav-toggle" id="navToggle" aria-label="Menu">
           <span></span>
           <span></span>
           <span></span>
-        </div>
+        </button>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section id="hero" class="hero-section">
-    <div class="hero-background">
-      <div class="particle particle-1"></div>
-      <div class="particle particle-2"></div>
-      <div class="particle particle-3"></div>
-      <div class="particle particle-4"></div>
-      <div class="particle particle-5"></div>
-    </div>
-    <div class="hero-content">
+  <section id="hero" class="hero">
+    <canvas class="hero-canvas" id="neuralCanvas" aria-hidden="true"></canvas>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow" id="heroGlow" aria-hidden="true"></div>
+
+    <div class="hero-inner">
       <div class="hero-text">
-        <h1 class="hero-title">
-          <span class="hero-greeting" data-en="Hello, I'm" data-tr="Merhaba, ben">Hello, I'm</span>
-          <span class="hero-name">Mert Cihan Bayır</span>
-        </h1>
-        <p class="hero-subtitle">Software Engineer | Artificial Intelligence | Machine Learning | Mobile AI</p>
-        <div class="hero-description">
-          <p data-en="Software Engineer specialized in Artificial Intelligence, Machine Learning, Computer Vision, and Kotlin-based mobile applications. Experienced in end-to-end AI pipelines including LIDAR data annotation, feature engineering, model training, mobile deployment (TFLite), workflow automation, and containerized systems." data-tr="Yapay zeka, makine öğrenmesi ve mobil uygulamalar alanında uzmanlaşmış yazılım mühendisi. Uçtan uca AI pipeline'larında deneyim sahibiyim.">Software Engineer specialized in Artificial Intelligence, Machine Learning, Computer Vision, and Kotlin-based mobile applications. Experienced in end-to-end AI pipelines including LIDAR data annotation, feature engineering, model training, mobile deployment (TFLite), workflow automation, and containerized systems.</p>
+        <div class="hero-kicker mono">
+          <span class="status-dot"></span>
+          <span data-en="AI Engineer · Software Engineer" data-tr="AI Mühendisi · Yazılım Mühendisi">AI Engineer · Software Engineer</span>
         </div>
-        <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">
-            <i class="fas fa-rocket"></i> <span data-en="View My Projects" data-tr="Projelerimi Gör">View My Projects</span>
+        <h1 class="hero-title">Mert Cihan<br>Bayır</h1>
+        <p class="hero-typed mono"><span id="typed"></span><span class="caret">_</span></p>
+        <p class="hero-desc" data-en="I build end-to-end AI systems — from RAG-powered chatbots and LLM pipelines to machine learning, deep learning and computer vision models deployed to production and mobile." data-tr="Uçtan uca yapay zeka sistemleri kuruyorum — RAG destekli chatbot'lar ve LLM pipeline'larından, üretime ve mobile dağıtılan makine öğrenmesi, derin öğrenme ve bilgisayarlı görü modellerine kadar.">I build end-to-end AI systems — from RAG-powered chatbots and LLM pipelines to machine learning, deep learning and computer vision models deployed to production and mobile.</p>
+
+        <div class="hero-chips mono">
+          <span class="chip">RAG</span>
+          <span class="chip">LLM</span>
+          <span class="chip">Machine Learning</span>
+          <span class="chip">Deep Learning</span>
+          <span class="chip">Computer Vision</span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary" data-magnetic>
+            <span data-en="View Projects" data-tr="Projeleri Gör">View Projects</span>
+            <i class="fas fa-arrow-right"></i>
           </a>
-          <a href="#contact" class="btn btn-secondary">
-            <i class="fas fa-envelope"></i> <span data-en="Get In Touch" data-tr="İletişime Geç">Get In Touch</span>
+          <a href="#contact" class="btn btn-ghost" data-magnetic>
+            <i class="fas fa-envelope"></i>
+            <span data-en="Get in Touch" data-tr="İletişime Geç">Get in Touch</span>
           </a>
         </div>
       </div>
-      <div class="hero-image">
-        <div class="profile-container">
-          <div class="profile-glow"></div>
-          <div class="profile-avatar">
+
+      <div class="hero-visual">
+        <div class="detect-frame" id="detectFrame">
+          <span class="detect-label mono">person · mert_cihan · 0.99</span>
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <div class="detect-photo">
             <img src="mcb_pp.png" alt="Mert Cihan Bayır" class="profile-image">
           </div>
+          <div class="scan-line" aria-hidden="true"></div>
         </div>
       </div>
     </div>
-    <div class="scroll-indicator">
-      <div class="scroll-mouse">
-        <div class="scroll-wheel"></div>
-      </div>
-      <span data-en="Scroll Down" data-tr="Aşağı Kaydır">Scroll Down</span>
-    </div>
+
+    <a href="#about" class="scroll-cue mono" aria-label="Scroll down">
+      <span class="scroll-track"><span class="scroll-thumb"></span></span>
+      <span data-en="scroll" data-tr="kaydır">scroll</span>
+    </a>
   </section>
 
   <!-- About Section -->
-  <section id="about" class="about-section">
+  <section id="about" class="section about">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title" data-en="About Me" data-tr="Hakkımda">About Me</h2>
-        <div class="section-subtitle" data-en="My software engineering journey" data-tr="Yazılım mühendisliği yolculuğum">My software engineering journey</div>
-      </div>
-      <div class="about-content">
+      <header class="section-head">
+        <span class="section-index mono">01</span>
+        <h2 class="section-title" data-en="About" data-tr="Hakkımda">About</h2>
+        <span class="section-sub" data-en="the engineer behind the models" data-tr="modellerin arkasındaki mühendis">the engineer behind the models</span>
+      </header>
+
+      <div class="about-grid">
         <div class="about-text">
           <p data-en="Software Engineer specialized in Artificial Intelligence, Machine Learning, Computer Vision, and Kotlin-based mobile applications. Experienced in end-to-end AI pipelines including LIDAR data annotation, feature engineering, model training, mobile deployment (TFLite), workflow automation, and containerized systems." data-tr="Software Engineer olarak Artificial Intelligence, Machine Learning, Computer Vision ve Kotlin tabanlı mobil uygulamalar alanında uzmanım. LIDAR veri etiketleme, özellik mühendisliği, model eğitimi, mobil dağıtım (TFLite), iş akışı otomasyonu ve konteyner sistemleri dahil olmak üzere uçtan uca AI pipeline'larında deneyim sahibiyim.">Software Engineer specialized in Artificial Intelligence, Machine Learning, Computer Vision, and Kotlin-based mobile applications. Experienced in end-to-end AI pipelines including LIDAR data annotation, feature engineering, model training, mobile deployment (TFLite), workflow automation, and containerized systems.</p>
+
           <div class="about-stats">
             <div class="stat-item">
-              <div class="stat-number">3+</div>
+              <div class="stat-number mono" data-target="3" data-suffix="+">0</div>
               <div class="stat-label" data-en="Years Experience" data-tr="Yıl Deneyim">Years Experience</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">10+</div>
+              <div class="stat-number mono" data-target="10" data-suffix="+">0</div>
               <div class="stat-label" data-en="Completed Projects" data-tr="Tamamlanan Proje">Completed Projects</div>
             </div>
             <div class="stat-item">
-              <div class="stat-number">99.5%</div>
+              <div class="stat-number mono" data-target="99.5" data-suffix="%">0</div>
               <div class="stat-label" data-en="Model Accuracy" data-tr="Model Doğruluk">Model Accuracy</div>
             </div>
           </div>
         </div>
-        <div class="about-image">
-          <div class="code-animation">
-            <div class="code-line line-1">const ai = new ArtificialIntelligence();</div>
-            <div class="code-line line-2">ai.train(model, dataset);</div>
-            <div class="code-line line-3">ai.deploy(mobile, tflite);</div>
-            <div class="cursor">|</div>
+
+        <aside class="model-card mono" aria-label="model card">
+          <div class="model-card-head">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="model-card-title">model_card.yaml</span>
           </div>
-        </div>
+          <div class="model-card-body">
+            <p><span class="k">name</span>: <span class="s">mert_cihan_bayir</span></p>
+            <p><span class="k">role</span>: <span class="s">AI Engineer</span></p>
+            <p><span class="k">focus</span>: [<span class="v">RAG</span>, <span class="v">LLM</span>, <span class="v">ML</span>, <span class="v">CV</span>]</p>
+            <p><span class="k">stack</span>: [<span class="v">Python</span>, <span class="v">Kotlin</span>, <span class="v">TFLite</span>]</p>
+            <p><span class="k">accuracy</span>: <span class="n">99.5%</span></p>
+            <p><span class="k">location</span>: <span class="s">Türkiye</span></p>
+            <p><span class="k">status</span>: <span class="ok">available_for_work</span></p>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
 
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0,20 Q30,4 60,20 T120,20 T180,20 T240,20 T300,20 T360,20 T420,20 T480,20 T540,20 T600,20 T660,20 T720,20 T780,20 T840,20 T900,20 T960,20 T1020,20 T1080,20 T1140,20 T1200,20" /></svg>
+  </div>
+
   <!-- Experience Section -->
-  <section id="experience" class="experience-section">
+  <section id="experience" class="section experience">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title" data-en="Experience & Education" data-tr="Deneyim & Eğitim">Experience & Education</h2>
-        <div class="section-subtitle" data-en="My professional journey" data-tr="Profesyonel yolculuğum">My professional journey</div>
-      </div>
-      <div class="experience-timeline">
-        <!-- VEXPO - En güncel -->
-        <div class="timeline-item">
+      <header class="section-head">
+        <span class="section-index mono">02</span>
+        <h2 class="section-title" data-en="Experience &amp; Education" data-tr="Deneyim &amp; Eğitim">Experience &amp; Education</h2>
+        <span class="section-sub" data-en="my professional journey" data-tr="profesyonel yolculuğum">my professional journey</span>
+      </header>
+
+      <div class="timeline">
+        <!-- VEXPO -->
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <h3>VEXPO - AI Engineer</h3>
-              <span class="timeline-date">2026 - Present</span>
+              <h3>VEXPO — AI Engineer</h3>
+              <span class="timeline-date mono">2026 — Present</span>
             </div>
             <ul class="timeline-list">
               <li data-en="Working as an AI Engineer developing artificial intelligence solutions." data-tr="Yapay zeka çözümleri geliştiren AI Engineer olarak çalışıyorum.">Working as an AI Engineer developing artificial intelligence solutions.</li>
@@ -149,7 +188,7 @@
               <li data-en="Developed RAG-based (Retrieval-Augmented Generation) chatbot systems for intelligent document querying and customer support." data-tr="Akıllı döküman sorgulama ve müşteri desteği için RAG tabanlı (Retrieval-Augmented Generation) chatbot sistemleri geliştirdim.">Developed RAG-based (Retrieval-Augmented Generation) chatbot systems for intelligent document querying and customer support.</li>
               <li data-en="Contributing to AI-driven product development and innovation." data-tr="AI odaklı ürün geliştirme ve inovasyona katkıda bulunuyorum.">Contributing to AI-driven product development and innovation.</li>
             </ul>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag" data-en="Artificial Intelligence" data-tr="Yapay Zeka">Artificial Intelligence</span>
               <span class="tag" data-en="Machine Learning" data-tr="Makine Öğrenmesi">Machine Learning</span>
               <span class="tag">RAG</span>
@@ -160,12 +199,12 @@
         </div>
 
         <!-- Google AI Academy -->
-        <div class="timeline-item">
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
               <h3>Google Artificial Intelligence and Technology Academy</h3>
-              <span class="timeline-date">2025</span>
+              <span class="timeline-date mono">2025</span>
             </div>
             <ul class="timeline-list">
               <li data-en="Completed Google-certified Artificial Intelligence and Machine Learning courses." data-tr="Google sertifikalı Yapay Zeka ve Makine Öğrenmesi kurslarını tamamladım">Completed Google-certified Artificial Intelligence and Machine Learning courses.</li>
@@ -174,7 +213,7 @@
               <li data-en="Designed an educational AI system that guides users to discover answers instead of providing direct responses." data-tr="Kullanıcıları doğrudan yanıt vermek yerine yanıtları keşfetmeye yönlendiren eğitimsel AI sistemi tasarladım">Designed an educational AI system that guides users to discover answers instead of providing direct responses.</li>
               <li data-en="Completed entrepreneurship and innovation-focused training." data-tr="Girişimcilik ve inovasyona odaklı eğitimleri tamamladım">Completed entrepreneurship and innovation-focused training.</li>
             </ul>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag" data-en="Google Certified" data-tr="Google Sertifikalı">Google Certified</span>
               <span class="tag">React</span>
               <span class="tag">Hackathon</span>
@@ -183,19 +222,19 @@
         </div>
 
         <!-- Ford Otosan - Data Annotator -->
-        <div class="timeline-item">
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <h3>Ford Otosan - Data Annotator</h3>
-              <span class="timeline-date">2023 - 2025</span>
+              <h3>Ford Otosan — Data Annotator</h3>
+              <span class="timeline-date mono">2023 — 2025</span>
             </div>
             <ul class="timeline-list">
               <li data-en="Annotated large-scale LIDAR point cloud datasets for autonomous driving perception systems." data-tr="Otonom sürüş algılama sistemleri için büyük ölçekli LIDAR nokta bulutu veri setlerini etiketledim">Annotated large-scale LIDAR point cloud datasets for autonomous driving perception systems.</li>
               <li data-en="Labeled 3D objects such as vehicles, pedestrians, and road elements to support detection and tracking models." data-tr="Araçlar, yayalar ve yol unsurları gibi 3D nesneleri tespit ve takip modellerini desteklemek için etiketledim">Labeled 3D objects such as vehicles, pedestrians, and road elements to support detection and tracking models.</li>
               <li data-en="Performed annotation validation and quality control to ensure dataset consistency and accuracy." data-tr="Veri seti tutarlılığı ve doğruluğunu sağlamak için etiket doğrulama ve kalite kontrolü yaptım">Performed annotation validation and quality control to ensure dataset consistency and accuracy.</li>
             </ul>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag">LIDAR</span>
               <span class="tag">3D Annotation</span>
               <span class="tag">Autonomous Driving</span>
@@ -204,18 +243,18 @@
         </div>
 
         <!-- Ford Otosan - AI Intern -->
-        <div class="timeline-item">
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <h3>Ford Otosan - AI Intern</h3>
-              <span class="timeline-date">2024</span>
+              <h3>Ford Otosan — AI Intern</h3>
+              <span class="timeline-date mono">2024</span>
             </div>
             <ul class="timeline-list">
               <li data-en="Developed a deep learning-based assistant model to accelerate data annotation workflows." data-tr="Veri etiketleme iş akışlarını hızlandırmak için derin öğrenme tabanlı asistan model geliştirdim">Developed a deep learning-based assistant model to accelerate data annotation workflows.</li>
               <li data-en="Improved labeling efficiency by reducing manual annotation time." data-tr="Manuel etiketleme süresini azaltarak etiketleme verimliliğini artırdım">Improved labeling efficiency by reducing manual annotation time.</li>
             </ul>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag" data-en="Deep Learning" data-tr="Derin Öğrenme">Deep Learning</span>
               <span class="tag" data-en="Automation" data-tr="Otomasyon">Automation</span>
             </div>
@@ -223,34 +262,34 @@
         </div>
 
         <!-- MKU Technology - AI Intern -->
-        <div class="timeline-item">
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <h3>MKU Technology - AI Intern</h3>
-              <span class="timeline-date">2024</span>
+              <h3>MKU Technology — AI Intern</h3>
+              <span class="timeline-date mono">2024</span>
             </div>
             <ul class="timeline-list">
               <li data-en="Worked in the AI team of an early-stage gender detection project." data-tr="Erken aşamadaki cinsiyet tespit projesinin AI ekibinde çalıştım">Worked in the AI team of an early-stage gender detection project.</li>
               <li data-en="Contributed to data preprocessing, feature extraction, and model evaluation pipelines." data-tr="Veri ön işleme, özellik çıkarımı ve model değerlendirme pipeline'larına katkıda bulundum">Contributed to data preprocessing, feature extraction, and model evaluation pipelines.</li>
             </ul>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag" data-en="Machine Learning" data-tr="Makine Öğrenmesi">Machine Learning</span>
               <span class="tag" data-en="Feature Engineering" data-tr="Özellik Mühendisliği">Feature Engineering</span>
             </div>
           </div>
         </div>
 
-        <!-- Education - Sakarya University -->
-        <div class="timeline-item">
+        <!-- Education -->
+        <div class="timeline-item reveal">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <h3>Sakarya University - Software Engineering</h3>
-              <span class="timeline-date">2021 - 2025</span>
+              <h3>Sakarya University — Software Engineering</h3>
+              <span class="timeline-date mono">2021 — 2025</span>
             </div>
             <p data-en="Bachelor's Degree in Software Engineering." data-tr="Lisans derecesi - Yazılım Mühendisliği.">Bachelor's Degree in Software Engineering.</p>
-            <div class="timeline-tags">
+            <div class="tags">
               <span class="tag" data-en="Bachelor's" data-tr="Lisans">Bachelor's</span>
               <span class="tag" data-en="Software Engineering" data-tr="Yazılım Mühendisliği">Software Engineering</span>
             </div>
@@ -261,259 +300,140 @@
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="projects-section">
+  <section id="projects" class="section projects">
     <div class="container">
-      <div class="section-header">
+      <header class="section-head">
+        <span class="section-index mono">03</span>
         <h2 class="section-title" data-en="Projects" data-tr="Projeler">Projects</h2>
-        <div class="section-subtitle" data-en="My AI and software projects" data-tr="AI ve yazılım projelerim">My AI and software projects</div>
-      </div>
+        <span class="section-sub" data-en="detected models &amp; systems" data-tr="tespit edilen modeller &amp; sistemler">detected models &amp; systems</span>
+      </header>
+
       <div class="projects-grid">
         <!-- Turkish Coffee AI -->
-        <div class="project-card">
-          <div class="project-image">
-            <div class="project-icon">
-              <i class="fas fa-coffee"></i>
-            </div>
-            <div class="project-overlay">
-              <div class="project-links">
-                <a href="#" class="project-link">
-                  <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="project-link">
-                  <i class="fas fa-external-link-alt"></i>
-                </a>
-              </div>
-            </div>
+        <article class="project-card reveal">
+          <div class="project-media">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <span class="detect-tag mono">yolov11n · 0.995</span>
+            <i class="fas fa-mug-hot project-icon"></i>
           </div>
-          <div class="project-content">
-            <h3 class="project-title" data-en="Turkish Coffee Fortune Telling AI Application" data-tr="Türk Kahvesi Falı AI Uygulaması">Turkish Coffee Fortune Telling AI Application</h3>
-            <p class="project-description" data-en="Android application that generates personalized fortune interpretations based on coffee cup types, developed as a graduation project." data-tr="Bitirme projesi olarak geliştirdiğim, kahve fincanı türüne göre kişiselleştirilmiş fal yorumları üreten Android uygulaması.">Android application that generates personalized fortune interpretations based on coffee cup types, developed as a graduation project.</p>
+          <div class="project-body">
+            <h3 class="project-title" data-en="Turkish Coffee Fortune Telling AI" data-tr="Türk Kahvesi Falı AI Uygulaması">Turkish Coffee Fortune Telling AI</h3>
+            <p class="project-desc" data-en="Android application that generates personalized fortune interpretations based on coffee cup types, developed as a graduation project." data-tr="Bitirme projesi olarak geliştirdiğim, kahve fincanı türüne göre kişiselleştirilmiş fal yorumları üreten Android uygulaması.">Android application that generates personalized fortune interpretations based on coffee cup types, developed as a graduation project.</p>
             <ul class="project-features">
               <li data-en="Created and manually annotated a custom dataset of 8,049 images." data-tr="8,049 görsel içeren özel veri seti oluşturma ve manuel etiketleme">Created and manually annotated a custom dataset of 8,049 images.</li>
               <li data-en="Trained a YOLOv11n classification model achieving 99.5% accuracy." data-tr="YOLOv11n sınıflandırma modeli - %99.5 doğruluk">Trained a YOLOv11n classification model achieving 99.5% accuracy.</li>
               <li data-en="Converted the model to TFLite and integrated it into a Kotlin-based Android application." data-tr="TFLite dönüşümü ve Kotlin tabanlı Android entegrasyonu">Converted the model to TFLite and integrated it into a Kotlin-based Android application.</li>
             </ul>
-            <div class="project-tags">
-              <span class="tag">YOLO</span>
-              <span class="tag">TFLite</span>
-              <span class="tag">Android</span>
-              <span class="tag">Kotlin</span>
-            </div>
+            <div class="tags"><span class="tag">YOLO</span><span class="tag">TFLite</span><span class="tag">Android</span><span class="tag">Kotlin</span></div>
+            <a href="https://github.com/MertCihan74" target="_blank" rel="noopener" class="project-link mono">
+              <i class="fab fa-github"></i> <span data-en="view source" data-tr="kaynağı gör">view source</span>
+            </a>
           </div>
-        </div>
+        </article>
 
         <!-- Gender Detection -->
-        <div class="project-card">
-          <div class="project-image">
-            <div class="project-icon">
-              <i class="fas fa-microphone"></i>
-            </div>
-            <div class="project-overlay">
-              <div class="project-links">
-                <a href="#" class="project-link">
-                  <i class="fab fa-github"></i>
-                </a>
-              </div>
-            </div>
+        <article class="project-card reveal">
+          <div class="project-media">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <span class="detect-tag mono">random_forest · 0.964</span>
+            <i class="fas fa-wave-square project-icon"></i>
           </div>
-          <div class="project-content">
+          <div class="project-body">
             <h3 class="project-title" data-en="Early Gender Detection" data-tr="Erken Cinsiyet Tespiti">Early Gender Detection</h3>
-            <p class="project-description" data-en="Machine learning model that detects gender using audio data." data-tr="Ses verisi kullanarak cinsiyeti tespit eden makine öğrenmesi modeli.">Machine learning model that detects gender using audio data.</p>
+            <p class="project-desc" data-en="Machine learning model that detects gender using audio data." data-tr="Ses verisi kullanarak cinsiyeti tespit eden makine öğrenmesi modeli.">Machine learning model that detects gender using audio data.</p>
             <ul class="project-features">
               <li data-en="Converted raw audio data into structured datasets using feature extraction and normalization techniques." data-tr="Ham ses verilerini yapılandırılmış veri setlerine dönüştürme">Converted raw audio data into structured datasets using feature extraction and normalization techniques.</li>
               <li data-en="Developed a Random Forest model achieving 96.4% accuracy." data-tr="Özellik çıkarımı ve normalizasyon teknikleri">Developed a Random Forest model achieving 96.4% accuracy.</li>
               <li data-en="Random Forest model - 96.4% accuracy" data-tr="Random Forest modeli - %96.4 doğruluk">Random Forest model - 96.4% accuracy</li>
             </ul>
-            <div class="project-tags">
-              <span class="tag">Random Forest</span>
-              <span class="tag" data-en="Audio Processing" data-tr="Ses İşleme">Audio Processing</span>
-              <span class="tag" data-en="Feature Engineering" data-tr="Özellik Mühendisliği">Feature Engineering</span>
-            </div>
+            <div class="tags"><span class="tag">Random Forest</span><span class="tag" data-en="Audio Processing" data-tr="Ses İşleme">Audio Processing</span><span class="tag" data-en="Feature Engineering" data-tr="Özellik Mühendisliği">Feature Engineering</span></div>
+            <a href="https://github.com/MertCihan74" target="_blank" rel="noopener" class="project-link mono">
+              <i class="fab fa-github"></i> <span data-en="view source" data-tr="kaynağı gör">view source</span>
+            </a>
           </div>
-        </div>
+        </article>
 
         <!-- EEG Detection -->
-        <div class="project-card">
-          <div class="project-image">
-            <div class="project-icon">
-              <i class="fas fa-brain"></i>
-            </div>
-            <div class="project-overlay">
-              <div class="project-links">
-                <a href="#" class="project-link">
-                  <i class="fab fa-github"></i>
-                </a>
-              </div>
-            </div>
+        <article class="project-card reveal">
+          <div class="project-media">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <span class="detect-tag mono">eeg_signal · 0.90</span>
+            <i class="fas fa-brain project-icon"></i>
           </div>
-          <div class="project-content">
+          <div class="project-body">
             <h3 class="project-title" data-en="EEG-Based Yes/No Detection" data-tr="EEG Tabanlı Evet/Hayır Tespiti">EEG-Based Yes/No Detection</h3>
-            <p class="project-description" data-en="System that detects real-time cognitive yes/no responses using brain waves." data-tr="Beyin dalgaları kullanarak bilişsel evet/hayır yanıtlarını gerçek zamanlı olarak tespit eden sistem.">System that detects real-time cognitive yes/no responses using brain waves.</p>
+            <p class="project-desc" data-en="System that detects real-time cognitive yes/no responses using brain waves." data-tr="Beyin dalgaları kullanarak bilişsel evet/hayır yanıtlarını gerçek zamanlı olarak tespit eden sistem.">System that detects real-time cognitive yes/no responses using brain waves.</p>
             <ul class="project-features">
               <li data-en="Collected EEG data using a 14-channel Emotiv EEG device." data-tr="14 kanallı Emotiv EEG cihazı ile veri toplama">Collected EEG data using a 14-channel Emotiv EEG device.</li>
               <li data-en="Extracted signal-based features and trained a Random Forest model achieving approximately 90% accuracy." data-tr="Sinyal tabanlı özellik çıkarımı">Extracted signal-based features and trained a Random Forest model achieving approximately 90% accuracy.</li>
               <li data-en="Successfully detected real-time cognitive yes/no responses." data-tr="Random Forest modeli - ~%90 doğruluk">Successfully detected real-time cognitive yes/no responses.</li>
             </ul>
-            <div class="project-tags">
-              <span class="tag">EEG</span>
-              <span class="tag" data-en="Signal Processing" data-tr="Sinyal İşleme">Signal Processing</span>
-              <span class="tag" data-en="Real-time" data-tr="Gerçek Zamanlı">Real-time</span>
-            </div>
+            <div class="tags"><span class="tag">EEG</span><span class="tag" data-en="Signal Processing" data-tr="Sinyal İşleme">Signal Processing</span><span class="tag" data-en="Real-time" data-tr="Gerçek Zamanlı">Real-time</span></div>
+            <a href="https://github.com/MertCihan74" target="_blank" rel="noopener" class="project-link mono">
+              <i class="fab fa-github"></i> <span data-en="view source" data-tr="kaynağı gör">view source</span>
+            </a>
           </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>
 
+  <div class="wave-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none"><path d="M0,20 Q30,4 60,20 T120,20 T180,20 T240,20 T300,20 T360,20 T420,20 T480,20 T540,20 T600,20 T660,20 T720,20 T780,20 T840,20 T900,20 T960,20 T1020,20 T1080,20 T1140,20 T1200,20" /></svg>
+  </div>
+
   <!-- Skills Section -->
-  <section id="skills" class="skills-section">
+  <section id="skills" class="section skills">
     <div class="container">
-      <div class="section-header">
+      <header class="section-head">
+        <span class="section-index mono">04</span>
         <h2 class="section-title" data-en="Skills" data-tr="Beceriler">Skills</h2>
-        <div class="section-subtitle" data-en="My technical competencies" data-tr="Teknik yetkinliklerim">My technical competencies</div>
-      </div>
+        <span class="section-sub" data-en="technical competencies" data-tr="teknik yetkinlikler">technical competencies</span>
+      </header>
+
       <div class="skills-grid">
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-code"></i> <span data-en="Programming" data-tr="Programlama">Programming</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name">Python</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 90%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">Java</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">Kotlin</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 88%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-code"></i> <span data-en="Programming" data-tr="Programlama">Programming</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">Python</span><span class="chip">Java</span><span class="chip">Kotlin</span>
           </div>
         </div>
 
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-mobile-alt"></i> <span data-en="Mobile Development" data-tr="Mobil Geliştirme">Mobile Development</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name">Android</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name" data-en="TFLite Integration" data-tr="TFLite Entegrasyonu">TFLite Integration</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 82%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-robot"></i> <span data-en="AI &amp; LLM" data-tr="AI &amp; LLM">AI &amp; LLM</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">RAG</span><span class="chip">LLM</span><span class="chip">Chatbot</span><span class="chip">Prompt Engineering</span>
           </div>
         </div>
 
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-brain"></i> <span data-en="Machine Learning" data-tr="Makine Öğrenmesi">Machine Learning</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name">Random Forest</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 90%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">SVM</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name" data-en="Feature Engineering" data-tr="Özellik Mühendisliği">Feature Engineering</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 88%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name" data-en="Signal Processing" data-tr="Sinyal İşleme">Signal Processing</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 80%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-brain"></i> <span data-en="Machine Learning" data-tr="Makine Öğrenmesi">Machine Learning</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">Random Forest</span><span class="chip">SVM</span><span class="chip" data-en="Feature Engineering" data-tr="Özellik Mühendisliği">Feature Engineering</span><span class="chip" data-en="Signal Processing" data-tr="Sinyal İşleme">Signal Processing</span>
           </div>
         </div>
 
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-cogs"></i> <span data-en="Deep Learning" data-tr="Derin Öğrenme">Deep Learning</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name">YOLO</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 85%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">CNNs</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 82%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-cogs"></i> <span data-en="Deep Learning &amp; CV" data-tr="Derin Öğrenme &amp; CV">Deep Learning &amp; CV</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">YOLO</span><span class="chip">CNNs</span><span class="chip">TFLite</span><span class="chip" data-en="Computer Vision" data-tr="Bilgisayarlı Görü">Computer Vision</span>
           </div>
         </div>
 
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-server"></i> <span data-en="DevOps & Automation" data-tr="DevOps & Otomasyon">DevOps & Automation</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name">Docker</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 75%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">Kubernetes</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 70%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name" data-en="n8n Automation" data-tr="n8n Otomasyon">n8n Automation</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 80%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-mobile-alt"></i> <span data-en="Mobile" data-tr="Mobil">Mobile</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">Android</span><span class="chip" data-en="TFLite Integration" data-tr="TFLite Entegrasyonu">TFLite Integration</span>
           </div>
         </div>
 
-        <div class="skill-category">
-          <h3 class="category-title">
-            <i class="fas fa-database"></i> <span data-en="Data & Tools" data-tr="Veri & Araçlar">Data & Tools</span>
-          </h3>
-          <div class="skill-items">
-            <div class="skill-item">
-              <span class="skill-name" data-en="LIDAR Annotation" data-tr="LIDAR Etiketleme">LIDAR Annotation</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 90%"></div>
-              </div>
-            </div>
-            <div class="skill-item">
-              <span class="skill-name">Git & GitHub</span>
-              <div class="skill-bar">
-                <div class="skill-progress" style="width: 85%"></div>
-              </div>
-            </div>
+        <div class="skill-category reveal">
+          <h3 class="category-title"><i class="fas fa-server"></i> <span data-en="DevOps &amp; Automation" data-tr="DevOps &amp; Otomasyon">DevOps &amp; Automation</span></h3>
+          <div class="chip-set mono">
+            <span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip" data-en="n8n Automation" data-tr="n8n Otomasyon">n8n Automation</span><span class="chip">Git &amp; GitHub</span>
           </div>
         </div>
       </div>
@@ -521,18 +441,18 @@
   </section>
 
   <!-- CV Section -->
-  <section id="cv" class="cv-section">
+  <section id="cv" class="section cv">
     <div class="container">
-      <div class="section-header">
+      <header class="section-head">
+        <span class="section-index mono">05</span>
         <h2 class="section-title" data-en="CV / Resume" data-tr="CV / Özgeçmiş">CV / Resume</h2>
-        <div class="section-subtitle" data-en="Download my professional CV in English or Turkish" data-tr="Profesyonel CV'mi İngilizce veya Türkçe olarak indirin">Download my professional CV in English or Turkish</div>
-      </div>
+        <span class="section-sub" data-en="download in English or Turkish" data-tr="İngilizce veya Türkçe indirin">download in English or Turkish</span>
+      </header>
+
       <div class="cv-grid">
-        <div class="cv-card">
-          <div class="cv-card-header">
-            <div class="cv-icon">
-              <i class="fas fa-file-pdf"></i>
-            </div>
+        <div class="cv-card reveal">
+          <div class="cv-card-head">
+            <div class="cv-icon"><i class="fas fa-file-pdf"></i></div>
             <div class="cv-info">
               <h3 data-en="English CV" data-tr="İngilizce CV">English CV</h3>
               <p data-en="Professional CV in English" data-tr="İngilizce profesyonel CV">Professional CV in English</p>
@@ -540,21 +460,17 @@
           </div>
           <div class="cv-actions">
             <a href="Mert_Cihan_Bayir_CV_2025_EN.pdf" class="cv-btn cv-btn-view" target="_blank">
-              <i class="fas fa-eye"></i>
-              <span data-en="View" data-tr="Görüntüle">View</span>
+              <i class="fas fa-eye"></i> <span data-en="View" data-tr="Görüntüle">View</span>
             </a>
             <a href="Mert_Cihan_Bayir_CV_2025_EN.pdf" class="cv-btn cv-btn-download" download>
-              <i class="fas fa-download"></i>
-              <span data-en="Download" data-tr="İndir">Download</span>
+              <i class="fas fa-download"></i> <span data-en="Download" data-tr="İndir">Download</span>
             </a>
           </div>
         </div>
 
-        <div class="cv-card">
-          <div class="cv-card-header">
-            <div class="cv-icon">
-              <i class="fas fa-file-pdf"></i>
-            </div>
+        <div class="cv-card reveal">
+          <div class="cv-card-head">
+            <div class="cv-icon"><i class="fas fa-file-pdf"></i></div>
             <div class="cv-info">
               <h3 data-en="Turkish CV" data-tr="Türkçe CV">Turkish CV</h3>
               <p data-en="Professional CV in Turkish" data-tr="Türkçe profesyonel CV">Professional CV in Turkish</p>
@@ -562,12 +478,10 @@
           </div>
           <div class="cv-actions">
             <a href="Mert_Cihan_Bayir_CV_2025_TR.pdf" class="cv-btn cv-btn-view" target="_blank">
-              <i class="fas fa-eye"></i>
-              <span data-en="View" data-tr="Görüntüle">View</span>
+              <i class="fas fa-eye"></i> <span data-en="View" data-tr="Görüntüle">View</span>
             </a>
             <a href="Mert_Cihan_Bayir_CV_2025_TR.pdf" class="cv-btn cv-btn-download" download>
-              <i class="fas fa-download"></i>
-              <span data-en="Download" data-tr="İndir">Download</span>
+              <i class="fas fa-download"></i> <span data-en="Download" data-tr="İndir">Download</span>
             </a>
           </div>
         </div>
@@ -576,110 +490,88 @@
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="contact-section">
+  <section id="contact" class="section contact">
     <div class="container">
-      <div class="section-header">
+      <header class="section-head">
+        <span class="section-index mono">06</span>
         <h2 class="section-title" data-en="Contact" data-tr="İletişim">Contact</h2>
-        <div class="section-subtitle" data-en="Find me on these platforms" data-tr="Bu platformlarda beni bulabilirsiniz">Find me on these platforms</div>
-      </div>
-      <div class="contact-content">
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fas fa-phone"></i>
-          </div>
+        <span class="section-sub" data-en="let's build something intelligent" data-tr="birlikte akıllı bir şey inşa edelim">let's build something intelligent</span>
+      </header>
+
+      <div class="contact-grid">
+        <a href="tel:+905330326659" class="contact-item reveal">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
           <div class="contact-details">
             <h3 data-en="Phone" data-tr="Telefon">Phone</h3>
-            <a href="tel:+905330326659">+90 533 032 6659</a>
+            <span class="mono">+90 533 032 6659</span>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
+        </a>
+        <a href="mailto:mertcihanbayir@gmail.com" class="contact-item reveal">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
           <div class="contact-details">
-            <h3 data-en="Email" data-tr="Email">Email</h3>
-            <a href="mailto:mertcihanbayir@gmail.com">mertcihanbayir@gmail.com</a>
+            <h3>Email</h3>
+            <span class="mono">mertcihanbayir@gmail.com</span>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fab fa-linkedin"></i>
-          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/mertcihanbayır" target="_blank" rel="noopener" class="contact-item reveal">
+          <div class="contact-icon"><i class="fab fa-linkedin-in"></i></div>
           <div class="contact-details">
-            <h3 data-en="LinkedIn" data-tr="LinkedIn">LinkedIn</h3>
-            <a href="https://www.linkedin.com/in/mertcihanbayır" target="_blank">linkedin.com/in/mertcihanbayır</a>
+            <h3>LinkedIn</h3>
+            <span class="mono">in/mertcihanbayır</span>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fab fa-github"></i>
-          </div>
+        </a>
+        <a href="https://github.com/MertCihan74" target="_blank" rel="noopener" class="contact-item reveal">
+          <div class="contact-icon"><i class="fab fa-github"></i></div>
           <div class="contact-details">
-            <h3 data-en="GitHub" data-tr="GitHub">GitHub</h3>
-            <a href="https://github.com/MertCihan74" target="_blank">github.com/MertCihan74</a>
+            <h3>GitHub</h3>
+            <span class="mono">MertCihan74</span>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fas fa-shopping-bag"></i>
-          </div>
+        </a>
+        <a href="https://mcbayir.gumroad.com/l/qtwvk" target="_blank" rel="noopener" class="contact-item reveal">
+          <div class="contact-icon"><i class="fas fa-shopping-bag"></i></div>
           <div class="contact-details">
-            <h3 data-en="Gumroad" data-tr="Gumroad">Gumroad</h3>
-            <a href="https://mcbayir.gumroad.com/l/qtwvk" target="_blank">mcbayir.gumroad.com</a>
+            <h3>Gumroad</h3>
+            <span class="mono">mcbayir.gumroad.com</span>
           </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">
-            <i class="fab fa-kaggle"></i>
-          </div>
+        </a>
+        <a href="https://www.kaggle.com/mertcihanbayr" target="_blank" rel="noopener" class="contact-item reveal">
+          <div class="contact-icon"><i class="fab fa-kaggle"></i></div>
           <div class="contact-details">
-            <h3 data-en="Kaggle" data-tr="Kaggle">Kaggle</h3>
-            <a href="https://www.kaggle.com/mertcihanbayr" target="_blank">kaggle.com/mertcihanbayr</a>
+            <h3>Kaggle</h3>
+            <span class="mono">kaggle.com/mertcihanbayr</span>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <img src="mcb.png" alt="MCB Logo" class="logo-image">
-        </div>
-        <div class="footer-links">
-          <a href="#hero" data-en="Home" data-tr="Ana Sayfa">Home</a>
-          <a href="#about" data-en="About" data-tr="Hakkımda">About</a>
-          <a href="#experience" data-en="Experience" data-tr="Deneyim">Experience</a>
-          <a href="#projects" data-en="Projects" data-tr="Projeler">Projects</a>
-          <a href="#skills" data-en="Skills" data-tr="Beceriler">Skills</a>
-          <a href="#contact" data-en="Contact" data-tr="İletişim">Contact</a>
-        </div>
-        <div class="footer-social">
-          <a href="https://www.linkedin.com/in/mertcihanbayır" target="_blank" title="LinkedIn">
-            <i class="fab fa-linkedin"></i>
-          </a>
-          <a href="https://github.com/MertCihan74" target="_blank" title="GitHub">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://mcbayir.gumroad.com/l/qtwvk" target="_blank" title="Gumroad">
-            <i class="fas fa-shopping-bag"></i>
-          </a>
-          <a href="https://www.kaggle.com/mertcihanbayr" target="_blank" title="Kaggle">
-            <i class="fab fa-kaggle"></i>
-          </a>
-          <a href="mailto:mertcihanbayir@gmail.com" title="Email">
-            <i class="fas fa-envelope"></i>
-          </a>
-        </div>
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <img src="mcb.png" alt="MCB Logo" class="logo-image">
+        <p class="mono" data-en="Building intelligent systems." data-tr="Akıllı sistemler inşa ediyorum.">Building intelligent systems.</p>
       </div>
-      <div class="footer-bottom">
-        <p data-en="&copy; 2025 Mert Cihan Bayır. All rights reserved." data-tr="&copy; 2025 Mert Cihan Bayır. Tüm hakları saklıdır.">&copy; 2025 Mert Cihan Bayır. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#hero" data-en="Home" data-tr="Ana Sayfa">Home</a>
+        <a href="#about" data-en="About" data-tr="Hakkımda">About</a>
+        <a href="#experience" data-en="Experience" data-tr="Deneyim">Experience</a>
+        <a href="#projects" data-en="Projects" data-tr="Projeler">Projects</a>
+        <a href="#skills" data-en="Skills" data-tr="Beceriler">Skills</a>
+        <a href="#contact" data-en="Contact" data-tr="İletişim">Contact</a>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/mertcihanbayır" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/MertCihan74" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://mcbayir.gumroad.com/l/qtwvk" target="_blank" rel="noopener" title="Gumroad"><i class="fas fa-shopping-bag"></i></a>
+        <a href="https://www.kaggle.com/mertcihanbayr" target="_blank" rel="noopener" title="Kaggle"><i class="fab fa-kaggle"></i></a>
+        <a href="mailto:mertcihanbayir@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
+    <div class="footer-bottom mono">
+      <p data-en="© 2025 Mert Cihan Bayır. All rights reserved." data-tr="© 2025 Mert Cihan Bayır. Tüm hakları saklıdır.">© 2025 Mert Cihan Bayır. All rights reserved.</p>
+    </div>
   </footer>
-
 
   <script src="script.js"></script>
 </body>
