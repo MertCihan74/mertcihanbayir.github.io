@@ -173,27 +173,33 @@
     statEls.forEach(el => statObs.observe(el));
   }
 
-  /* ---------- Magnetic buttons ---------- */
-  if (!prefersReduced && window.matchMedia('(pointer:fine)').matches) {
+  /* ---------- Shared pointer (coalesced; no layout reads on move) ---------- */
+  const finePointer = !prefersReduced && window.matchMedia('(pointer:fine)').matches;
+  const pointer = { x: -9999, y: -9999, active: false };
+  const glow = document.getElementById('heroGlow');
+  const hero = document.getElementById('hero');
+  let heroRect = null, glowX = 0, glowY = 0, glowInit = false;
+  function refreshHeroRect() { if (hero) heroRect = hero.getBoundingClientRect(); }
+  if (finePointer) {
+    window.addEventListener('mousemove', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; }, { passive: true });
+    window.addEventListener('mouseout', () => { pointer.active = false; });
+    window.addEventListener('scroll', refreshHeroRect, { passive: true });
+    window.addEventListener('resize', refreshHeroRect, { passive: true });
+    refreshHeroRect();
+  }
+
+  /* ---------- Magnetic buttons (rect cached on hover) ---------- */
+  if (finePointer) {
     document.querySelectorAll('[data-magnetic]').forEach(btn => {
+      let r = null;
+      btn.addEventListener('mouseenter', () => { r = btn.getBoundingClientRect(); });
       btn.addEventListener('mousemove', e => {
-        const r = btn.getBoundingClientRect();
+        if (!r) r = btn.getBoundingClientRect();
         const x = e.clientX - r.left - r.width / 2;
         const y = e.clientY - r.top - r.height / 2;
         btn.style.transform = `translate(${x * 0.18}px, ${y * 0.28}px)`;
       });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
-    });
-  }
-
-  /* ---------- Hero glow follows cursor ---------- */
-  const glow = document.getElementById('heroGlow');
-  const hero = document.getElementById('hero');
-  if (glow && hero && !prefersReduced && window.matchMedia('(pointer:fine)').matches) {
-    hero.addEventListener('mousemove', e => {
-      const r = hero.getBoundingClientRect();
-      glow.style.left = (e.clientX - r.left) + 'px';
-      glow.style.top = (e.clientY - r.top) + 'px';
+      btn.addEventListener('mouseleave', () => { r = null; btn.style.transform = ''; });
     });
   }
 
@@ -203,7 +209,7 @@
     if (!canvas || prefersReduced) return;
     const ctx = canvas.getContext('2d');
     let w, h, dpr, nodes = [];
-    const mouse = { x: -9999, y: -9999 };
+    const LINK = 130, BUCKETS = 4;
 
     function isLight() { return root.getAttribute('data-theme') === 'light'; }
 
@@ -214,60 +220,83 @@
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(Math.floor((w * h) / 15000), 90);
+      const count = Math.min(Math.floor((w * h) / 20000), 64);
       nodes = [];
       for (let i = 0; i < count; i++) {
         nodes.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          r: Math.random() * 1.6 + 0.6
+          vx: (Math.random() - 0.5) * 0.32,
+          vy: (Math.random() - 0.5) * 0.32,
+          r: Math.random() * 1.5 + 0.6
         });
       }
+      refreshHeroRect();
     }
 
     function step() {
       ctx.clearRect(0, 0, w, h);
       const light = isLight();
-      const dotColor = light ? 'rgba(8,145,178,0.55)' : 'rgba(34,211,238,0.8)';
       const lineBase = light ? '8,145,178' : '34,211,238';
-      const linkDist = 130;
+      const maxA = light ? 0.28 : 0.35;
 
+      // pointer in local space, from cached rect (no per-frame layout read)
+      let mx, my;
+      const hasMouse = pointer.active && heroRect;
+      if (hasMouse) { mx = pointer.x - heroRect.left; my = pointer.y - heroRect.top; }
+
+      const buckets = [[], [], [], []];
+      ctx.beginPath(); // all dots batched into one path
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
         n.x += n.vx; n.y += n.vy;
         if (n.x < 0 || n.x > w) n.vx *= -1;
         if (n.y < 0 || n.y > h) n.vy *= -1;
 
-        // cursor attraction
-        const dxm = mouse.x - n.x, dym = mouse.y - n.y;
-        const dm = Math.hypot(dxm, dym);
-        if (dm < 160) {
-          n.x += dxm * 0.008;
-          n.y += dym * 0.008;
+        if (hasMouse) {
+          const dxm = mx - n.x, dym = my - n.y;
+          if (dxm * dxm + dym * dym < 25600) { n.x += dxm * 0.008; n.y += dym * 0.008; }
         }
 
-        ctx.beginPath();
+        ctx.moveTo(n.x + n.r, n.y);
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
 
         for (let j = i + 1; j < nodes.length; j++) {
           const m = nodes[j];
           const dx = n.x - m.x, dy = n.y - m.y;
-          const d = Math.hypot(dx, dy);
-          if (d < linkDist) {
-            const alpha = (1 - d / linkDist) * (light ? 0.28 : 0.35);
-            ctx.strokeStyle = `rgba(${lineBase},${alpha})`;
-            ctx.lineWidth = 0.7;
-            ctx.beginPath();
-            ctx.moveTo(n.x, n.y);
-            ctx.lineTo(m.x, m.y);
-            ctx.stroke();
+          const d2 = dx * dx + dy * dy;
+          if (d2 < LINK * LINK) {
+            const t = 1 - Math.sqrt(d2) / LINK;
+            const b = t >= 0.999 ? BUCKETS - 1 : (t * BUCKETS) | 0;
+            buckets[b].push(n.x, n.y, m.x, m.y);
           }
         }
       }
+      ctx.fillStyle = light ? 'rgba(8,145,178,0.55)' : 'rgba(34,211,238,0.8)';
+      ctx.fill();
+
+      // one stroke() per alpha bucket => <=4 draw calls instead of hundreds
+      ctx.lineWidth = 0.7;
+      for (let b = 0; b < BUCKETS; b++) {
+        const arr = buckets[b];
+        if (!arr.length) continue;
+        ctx.strokeStyle = `rgba(${lineBase},${((b + 0.5) / BUCKETS) * maxA})`;
+        ctx.beginPath();
+        for (let k = 0; k < arr.length; k += 4) {
+          ctx.moveTo(arr[k], arr[k + 1]);
+          ctx.lineTo(arr[k + 2], arr[k + 3]);
+        }
+        ctx.stroke();
+      }
+
+      // hero glow trails the cursor (transform only — compositor cheap, no layout)
+      if (glow && hasMouse) {
+        if (!glowInit) { glowX = mx; glowY = my; glowInit = true; }
+        glowX += (mx - glowX) * 0.12;
+        glowY += (my - glowY) * 0.12;
+        glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+      }
+
       if (running) raf = requestAnimationFrame(step);
     }
 
@@ -279,12 +308,12 @@
       return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
     }
 
-    window.addEventListener('mousemove', e => {
-      const r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = e.clientY - r.top;
-    });
-    window.addEventListener('mouseout', () => { mouse.x = -9999; mouse.y = -9999; });
+    // ResizeObserver keeps the backing store correct across layout/responsive changes
+    // (and recovers if the canvas first laid out at zero width). Falls back to window resize.
+    if ('ResizeObserver' in window) {
+      let roInit = false;
+      new ResizeObserver(() => { if (roInit) resize(); roInit = true; }).observe(canvas);
+    }
     window.addEventListener('resize', () => { resize(); }, { passive: true });
 
     // Pause the loop when the hero canvas is off-screen or the tab is hidden (saves CPU/battery)
